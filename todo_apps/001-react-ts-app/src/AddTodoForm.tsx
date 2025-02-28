@@ -22,7 +22,7 @@ function AddTodoForm() {
             <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input" id="todo-name"/>
             <br></br>
             <label htmlFor="todo-urgency">Task Urgency Level (1-10): </label>
-            <input type="number" onChange={handleTodoUrgencyChange} value={todoUrgency} min="1" max="10" className="todo-urgency-input" id="todo-urgency"/>
+            <input type="number" onChange={handleTodoUrgencyChange} value={!Number.isNaN(todoUrgency) ? todoUrgency : ""} min="1" max="10" className="todo-urgency-input" id="todo-urgency"/>
             <br></br>
             <button>Add Todo</button>
         </>
