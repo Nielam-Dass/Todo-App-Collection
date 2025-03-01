@@ -1,6 +1,10 @@
 import React, { useState } from "react"
 
-function AddTodoForm() {
+interface AddTodoFormProps {
+    addTodo(todo: string): void
+}
+
+function AddTodoForm(props: AddTodoFormProps) {
     const [todoName, setTodoName] = useState<string>("");
     const [todoUrgency, setTodoUrgency] = useState<number>(1);
     
@@ -16,6 +20,11 @@ function AddTodoForm() {
         });
     }
 
+    const handleAdd = (): void => {
+        const todo: string = todoName;
+        props.addTodo(todo);
+    }
+
     return (
         <>
             <label htmlFor="todo-name">Task Name: </label>
@@ -24,7 +33,7 @@ function AddTodoForm() {
             <label htmlFor="todo-urgency">Task Urgency Level (1-10): </label>
             <input type="number" onChange={handleTodoUrgencyChange} value={!Number.isNaN(todoUrgency) ? todoUrgency : ""} min="1" max="10" className="todo-urgency-input" id="todo-urgency"/>
             <br></br>
-            <button>Add Todo</button>
+            <button onClick={handleAdd}>Add Todo</button>
         </>
     )
 }
