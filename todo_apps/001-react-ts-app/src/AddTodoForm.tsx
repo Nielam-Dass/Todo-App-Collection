@@ -8,19 +8,19 @@ function AddTodoForm(props: AddTodoFormProps) {
     const [todoName, setTodoName] = useState<string>("");
     const [todoUrgency, setTodoUrgency] = useState<number>(1);
     
-    const handleTodoNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const handleTodoNameChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setTodoName((): string => {
             return event.target.value;
         });
     }
 
-    const handleTodoUrgencyChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const handleTodoUrgencyChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setTodoUrgency((): number => {
             return parseInt(event.target.value);
         });
     }
 
-    const handleAdd = (): void => {
+    const handleAdd: React.MouseEventHandler<HTMLButtonElement> = (): void => {
         const todo: string = todoName;
         props.addTodo(todo);
     }
