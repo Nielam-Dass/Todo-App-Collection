@@ -6,7 +6,7 @@ interface AddTodoFormProps {
 
 function AddTodoForm(props: AddTodoFormProps) {
     const [todoName, setTodoName] = useState<string>("");
-    const [todoUrgency, setTodoUrgency] = useState<number>(1);
+    const [todoUrgency, setTodoUrgency] = useState<string>("");
     
     const handleTodoNameChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setTodoName((): string => {
@@ -15,8 +15,8 @@ function AddTodoForm(props: AddTodoFormProps) {
     }
 
     const handleTodoUrgencyChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setTodoUrgency((): number => {
-            return parseInt(event.target.value);
+        setTodoUrgency((): string => {
+            return event.target.value;
         });
     }
 
@@ -31,7 +31,7 @@ function AddTodoForm(props: AddTodoFormProps) {
             <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input" id="todo-name"/>
             <br></br>
             <label htmlFor="todo-urgency">Task Urgency Level (1-10): </label>
-            <input type="number" onChange={handleTodoUrgencyChange} value={!Number.isNaN(todoUrgency) ? todoUrgency : ""} min="1" max="10" className="todo-urgency-input" id="todo-urgency"/>
+            <input type="number" onChange={handleTodoUrgencyChange} value={todoUrgency} min="1" max="10" className="todo-urgency-input" id="todo-urgency"/>
             <br></br>
             <button onClick={handleAdd}>Add Todo</button>
         </>
