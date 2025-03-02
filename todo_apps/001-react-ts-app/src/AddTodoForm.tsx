@@ -15,8 +15,15 @@ function AddTodoForm(props: AddTodoFormProps) {
     }
 
     const handleTodoUrgencyChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setTodoUrgency((): string => {
-            return event.target.value;
+        setTodoUrgency((tu: string): string => {
+            const urgencyLevel: number = parseInt(event.target.value);
+            if(Number.isNaN(urgencyLevel)) {
+                return "";
+            }
+            else if(urgencyLevel>=1 && urgencyLevel<=10) {
+                return urgencyLevel.toString();
+            }
+            return tu;
         });
     }
 
