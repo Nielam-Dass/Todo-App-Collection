@@ -1,18 +1,19 @@
 import { ReactNode } from "react";
 import TodoItem from "./TodoItem";
+import Task from "./Task";
 
 interface TodoListProps {
-    tasks: string[];
+    tasks: Task[];
 }
 
 function TodoList(props: TodoListProps){
     return (
         <>
         <ul>
-            {props.tasks.map((task: string, index: number): ReactNode => {
+            {props.tasks.map((task: Task, index: number): ReactNode => {
                 return(
                     <li key={index}>
-                        <TodoItem taskName={task}/>
+                        <TodoItem taskName={task.taskName}/>
                     </li>
                 )
             })}
