@@ -19,10 +19,10 @@ function App() {
     },
   ]);
 
-  function addTask(newTask: string){
+  function addTask(newTask: Task): void{
     setTasks((t: Task[]): Task[] => {
-      return [...t, {taskName: newTask, taskUrgency: 1}];  // Will allow taskUrgency to be set by argument in future
-    })
+      return [...t, newTask];
+    });
   }
 
   return (

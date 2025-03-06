@@ -1,7 +1,8 @@
 import React, { useState } from "react"
+import Task from "./Task";
 
 interface AddTodoFormProps {
-    addTodo(todo: string): void
+    addTodo(todo: Task): void;
 }
 
 function AddTodoForm(props: AddTodoFormProps) {
@@ -28,8 +29,11 @@ function AddTodoForm(props: AddTodoFormProps) {
     }
 
     const handleAdd: React.MouseEventHandler<HTMLButtonElement> = (): void => {
-        const todo: string = todoName;
-        props.addTodo(todo);
+        const newTodo: Task = {
+            taskName: todoName,
+            taskUrgency: parseInt(todoUrgency)
+        }
+        props.addTodo(newTodo);
     }
 
     return (
