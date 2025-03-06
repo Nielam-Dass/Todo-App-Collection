@@ -1,10 +1,12 @@
+import Task from "./Task";
+
 interface TodoProps {
-    taskName: string;
+    task: Task;
 }
 
 function TodoItem(props: TodoProps){
     return (
-            <div>{props.taskName}</div>
+            <div>{props.task.taskName}</div>
     )
 }
 

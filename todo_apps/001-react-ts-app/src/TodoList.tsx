@@ -13,7 +13,7 @@ function TodoList(props: TodoListProps){
             {props.tasks.map((task: Task, index: number): ReactNode => {
                 return(
                     <li key={index}>
-                        <TodoItem taskName={task.taskName}/>
+                        <TodoItem task={task}/>
                     </li>
                 )
             })}
