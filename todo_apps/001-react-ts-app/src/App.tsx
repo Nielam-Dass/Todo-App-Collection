@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./TodoList";
 import Task from "./Task";
 
-function App() {
+function App(): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([
     {
       taskName: "Task 1",

@@ -1,11 +1,11 @@
-import React, { useState } from "react"
+import React, { JSX, useState } from "react"
 import Task from "./Task";
 
 interface AddTodoFormProps {
     addTodo(todo: Task): void;
 }
 
-function AddTodoForm(props: AddTodoFormProps) {
+function AddTodoForm(props: AddTodoFormProps): JSX.Element {
     const [todoName, setTodoName] = useState<string>("");
     const [todoUrgency, setTodoUrgency] = useState<string>("");
     
