@@ -29,9 +29,15 @@ function AddTodoForm(props: AddTodoFormProps): JSX.Element {
     }
 
     const handleAdd: React.MouseEventHandler<HTMLButtonElement> = (): void => {
+        const todoUrgencyLevel: number = parseInt(todoUrgency);
+        const todoNameTrimmed: string = todoName.trim();
+        if(todoNameTrimmed.length == 0 || Number.isNaN(todoUrgencyLevel)) {
+            alert("Must provide valid task name and urgency level!");
+            return;
+        }
         const newTodo: Task = {
-            taskName: todoName,
-            taskUrgency: parseInt(todoUrgency)
+            taskName: todoNameTrimmed,
+            taskUrgency: todoUrgencyLevel
         }
         props.addTodo(newTodo);
     }
