@@ -1,6 +1,7 @@
 import { JSX, ReactNode } from "react";
 import TodoItem from "./TodoItem";
 import Task from "./Task";
+import "./todo-list-styles.css"
 
 interface TodoListProps {
     tasks: Task[];
