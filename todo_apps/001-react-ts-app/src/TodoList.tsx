@@ -8,6 +8,13 @@ interface TodoListProps {
 }
 
 function TodoList(props: TodoListProps): JSX.Element {
+    if(props.tasks.length==0){
+        return (
+            <>
+            <div>There are no tasks left</div>
+            </>
+        )
+    }
     return (
         <>
         <table>

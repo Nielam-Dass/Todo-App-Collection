@@ -4,20 +4,7 @@ import TodoList from "./TodoList";
 import Task from "./Task";
 
 function App(): JSX.Element {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      taskName: "Task 1",
-      taskUrgency: 4
-    },
-    {
-      taskName: "Task 2",
-      taskUrgency: 8
-    },
-    {
-      taskName: "Task 3",
-      taskUrgency: 7
-    },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   function addTask(newTask: Task): void{
     setTasks((t: Task[]): Task[] => {
