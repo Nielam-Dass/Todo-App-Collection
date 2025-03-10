@@ -9,15 +9,21 @@ interface TodoListProps {
 function TodoList(props: TodoListProps): JSX.Element {
     return (
         <>
-        <ul>
-            {props.tasks.map((task: Task, index: number): ReactNode => {
-                return(
-                    <li key={index}>
-                        <TodoItem task={task}/>
-                    </li>
-                )
-            })}
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Urgency Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                {props.tasks.map((task: Task, index: number): ReactNode => {
+                    return(
+                        <TodoItem task={task} key={index}/>
+                    )
+                })}
+            </tbody>
+        </table>
         </>
     )
 }

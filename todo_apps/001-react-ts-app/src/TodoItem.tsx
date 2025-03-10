@@ -7,7 +7,10 @@ interface TodoProps {
 
 function TodoItem(props: TodoProps): JSX.Element {
     return (
-            <div>{props.task.taskName}</div>
+        <tr>
+            <td>{props.task.taskName}</td>
+            <td>{props.task.taskUrgency}</td>
+        </tr>
     )
 }
 
