@@ -1,13 +1,13 @@
 import { JSX, ReactNode } from "react";
-import TodoItem from "./TodoItem";
+import TodoRow from "./TodoRow";
 import Task from "./Task";
 import "./todo-list-styles.css"
 
-interface TodoListProps {
+interface TodoTableProps {
     tasks: Task[];
 }
 
-function TodoList(props: TodoListProps): JSX.Element {
+function TodoTable(props: TodoTableProps): JSX.Element {
     if(props.tasks.length==0){
         return (
             <>
@@ -29,7 +29,7 @@ function TodoList(props: TodoListProps): JSX.Element {
             <tbody>
                 {props.tasks.map((task: Task, index: number): ReactNode => {
                     return(
-                        <TodoItem task={task} key={index}/>
+                        <TodoRow task={task} key={index}/>
                     )
                 })}
             </tbody>
@@ -38,4 +38,4 @@ function TodoList(props: TodoListProps): JSX.Element {
     )
 }
 
-export default TodoList
+export default TodoTable

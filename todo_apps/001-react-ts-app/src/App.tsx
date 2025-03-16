@@ -1,6 +1,6 @@
 import { JSX, useState } from "react";
 import AddTodoForm from "./AddTodoForm";
-import TodoList from "./TodoList";
+import TodoTable from "./TodoTable";
 import Task from "./Task";
 
 function App(): JSX.Element {
@@ -16,7 +16,7 @@ function App(): JSX.Element {
     <>
       <h1>Todo App</h1>
       <AddTodoForm addTodo={addTask}/>
-      <TodoList tasks={tasks}/>
+      <TodoTable tasks={tasks}/>
     </>
   )
 }

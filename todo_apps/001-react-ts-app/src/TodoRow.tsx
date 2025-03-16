@@ -1,11 +1,11 @@
 import { JSX } from "react";
 import Task from "./Task";
 
-interface TodoProps {
+interface TodoRowProps {
     task: Task;
 }
 
-function TodoItem(props: TodoProps): JSX.Element {
+function TodoRow(props: TodoRowProps): JSX.Element {
     return (
         <tr>
             <td>{props.task.taskName}</td>
@@ -16,4 +16,4 @@ function TodoItem(props: TodoProps): JSX.Element {
     )
 }
 
-export default TodoItem
+export default TodoRow
