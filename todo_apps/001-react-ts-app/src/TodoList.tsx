@@ -22,6 +22,8 @@ function TodoList(props: TodoListProps): JSX.Element {
                 <tr>
                     <th>Task Name</th>
                     <th>Urgency Level</th>
+                    <th>Edit Task</th>
+                    <th>Remove Task</th>
                 </tr>
             </thead>
             <tbody>
