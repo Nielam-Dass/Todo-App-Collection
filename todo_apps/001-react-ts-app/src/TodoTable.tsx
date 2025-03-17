@@ -8,6 +8,10 @@ interface TodoTableProps {
 }
 
 function TodoTable(props: TodoTableProps): JSX.Element {
+    const handleRemoveTask = (index: number): void => {
+        throw new Error("handleRemoveTask function not implemented yet");
+    }
+
     if(props.tasks.length==0){
         return (
             <>
@@ -29,7 +33,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
             <tbody>
                 {props.tasks.map((task: Task, index: number): ReactNode => {
                     return(
-                        <TodoRow task={task} key={index}/>
+                        <TodoRow task={task} key={index} onRemove={() => handleRemoveTask(index)}/>
                     )
                 })}
             </tbody>
