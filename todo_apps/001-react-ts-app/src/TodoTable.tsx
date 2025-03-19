@@ -13,6 +13,10 @@ function TodoTable(props: TodoTableProps): JSX.Element {
         props.deleteTodo(index);
     }
 
+    const handleEditTask = (index: number) => {
+        throw new Error("handleEditTask function not implemented yet");
+    }
+
     if(props.tasks.length==0){
         return (
             <>
@@ -34,7 +38,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
             <tbody>
                 {props.tasks.map((task: Task, index: number): ReactNode => {
                     return(
-                        <TodoRow task={task} key={index} onRemove={() => handleRemoveTask(index)}/>
+                        <TodoRow task={task} key={index} onRemove={() => handleRemoveTask(index)} onEdit={() => handleEditTask(index)}/>
                     )
                 })}
             </tbody>

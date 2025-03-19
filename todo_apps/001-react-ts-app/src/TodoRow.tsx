@@ -4,6 +4,7 @@ import Task from "./Task";
 interface TodoRowProps {
     task: Task;
     onRemove(): void;
+    onEdit(): void;
 }
 
 function TodoRow(props: TodoRowProps): JSX.Element {
@@ -12,7 +13,7 @@ function TodoRow(props: TodoRowProps): JSX.Element {
             <td>{props.task.taskName}</td>
             <td>{props.task.taskUrgency}</td>
             <td>
-                <button>Edit</button>
+                <button onClick={props.onEdit}>Edit</button>
             </td>
             <td>
                 <button onClick={props.onRemove}>Remove</button>
