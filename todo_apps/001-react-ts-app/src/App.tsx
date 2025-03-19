@@ -12,11 +12,15 @@ function App(): JSX.Element {
     });
   }
 
+  function deleteTask(index: number): void{
+    setTasks((t: Task[]): Task[] => t.filter((_element: Task, idx: number) => idx!==index));
+  }
+
   return (
     <>
       <h1>Todo App</h1>
       <AddTodoForm addTodo={addTask}/>
-      <TodoTable tasks={tasks}/>
+      <TodoTable tasks={tasks} deleteTodo={deleteTask}/>
     </>
   )
 }

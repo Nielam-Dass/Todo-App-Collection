@@ -5,11 +5,12 @@ import "./todo-list-styles.css"
 
 interface TodoTableProps {
     tasks: Task[];
+    deleteTodo(index: number): void;
 }
 
 function TodoTable(props: TodoTableProps): JSX.Element {
     const handleRemoveTask = (index: number): void => {
-        throw new Error("handleRemoveTask function not implemented yet");
+        props.deleteTodo(index);
     }
 
     if(props.tasks.length==0){
