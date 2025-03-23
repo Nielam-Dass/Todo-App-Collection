@@ -2,6 +2,7 @@ import { JSX, useState } from "react";
 import TodoHome from "./TodoHome";
 import { Route, Routes } from "react-router-dom";
 import Task from "./Task";
+import EditTodoForm from "./EditTodoForm";
 
 function App(): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -20,7 +21,7 @@ function App(): JSX.Element {
     <>
       <Routes>
         <Route path="/" element={<TodoHome tasks={tasks} addTask={addTask} deleteTask={deleteTask}/>}/>
-        <Route path="/edit" element={<h1>Edit page</h1>}/>
+        <Route path="/edit" element={<EditTodoForm />}/>
       </Routes>
     </>
   )
