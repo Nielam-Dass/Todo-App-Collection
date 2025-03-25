@@ -2,6 +2,7 @@ import { JSX, ReactNode } from "react";
 import TodoRow from "./TodoRow";
 import Task from "./Task";
 import "./todo-list-styles.css"
+import { useNavigate } from "react-router-dom";
 
 interface TodoTableProps {
     tasks: Task[];
@@ -9,12 +10,14 @@ interface TodoTableProps {
 }
 
 function TodoTable(props: TodoTableProps): JSX.Element {
+    const navigate = useNavigate();
+
     const handleRemoveTask = (index: number): void => {
         props.deleteTodo(index);
     }
 
     const handleEditTask = (index: number) => {
-        throw new Error("handleEditTask function not implemented yet");
+        navigate("/edit");
     }
 
     if(props.tasks.length==0){
