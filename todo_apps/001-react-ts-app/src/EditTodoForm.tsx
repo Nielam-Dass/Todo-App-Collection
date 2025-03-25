@@ -1,10 +1,11 @@
 import { JSX } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function EditTodoForm(): JSX.Element {
+    const params = useParams()
     return (
         <>
-            <h1>Edit todo form</h1>
+            <h1>Edit todo form for task at index {params.id}</h1>
             <Link to={"/"}>Home</Link>
         </>
     )

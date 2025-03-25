@@ -17,7 +17,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
     }
 
     const handleEditTask = (index: number) => {
-        navigate("/edit");
+        navigate(`/edit/${index}`);
     }
 
     if(props.tasks.length==0){
