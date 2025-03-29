@@ -1,11 +1,17 @@
 import React, { JSX, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import Task from "./Task";
 
-function EditTodoForm(): JSX.Element {
+interface EditTodoFormProps {
+    tasks: Task[];
+}
+
+function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     // TODO: Create common UI form component to use in EditTodoForm and AddTodoForm
-    const params = useParams();
-    const [todoName, setTodoName] = useState<string>("");
-    const [todoUrgency, setTodoUrgency] = useState<string>("");
+    const params = useParams() as {id: string};
+    const taskId: number = parseInt(params.id);
+    const [todoName, setTodoName] = useState<string>(props.tasks[taskId].taskName);
+    const [todoUrgency, setTodoUrgency] = useState<string>(props.tasks[taskId].taskUrgency.toString());
 
     const handleTodoNameChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
             setTodoName((): string => {
