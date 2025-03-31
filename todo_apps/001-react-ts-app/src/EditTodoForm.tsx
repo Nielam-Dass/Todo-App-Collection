@@ -35,9 +35,15 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     }
 
     const handleEdit: React.MouseEventHandler<HTMLButtonElement> = (): void => {
+        const todoUrgencyLevel: number = parseInt(todoUrgency);
+        const todoNameTrimmed: string = todoName.trim();
+        if(todoNameTrimmed.length == 0 || Number.isNaN(todoUrgencyLevel)) {
+            alert("Must provide valid task name and urgency level!");
+            return;
+        }
         const updatedTask: Task = {
-            taskName: "Updated task name",
-            taskUrgency: 4
+            taskName: todoNameTrimmed,
+            taskUrgency: todoUrgencyLevel
         }
         props.editTodo(taskId, updatedTask);
         navigate('/');
