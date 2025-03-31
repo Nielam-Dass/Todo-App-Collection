@@ -16,12 +16,16 @@ function App(): JSX.Element {
   function deleteTask(index: number): void{
     setTasks((t: Task[]): Task[] => t.filter((_element: Task, idx: number) => idx!==index));
   }
+
+  function updateTask(updateIndex: number, updatedTask: Task): void{
+    setTasks((t: Task[]): Task[] => t.map((value: Task, index: number) => index===updateIndex ? updatedTask : value))
+  }
   
   return (
     <>
       <Routes>
         <Route path="/" element={<TodoHome tasks={tasks} addTask={addTask} deleteTask={deleteTask}/>}/>
-        <Route path="/edit/:id" element={<EditTodoForm tasks={tasks}/>}/>
+        <Route path="/edit/:id" element={<EditTodoForm tasks={tasks} editTodo={updateTask}/>}/>
       </Routes>
     </>
   )

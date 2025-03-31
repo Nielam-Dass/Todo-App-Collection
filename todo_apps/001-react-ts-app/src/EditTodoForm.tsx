@@ -1,9 +1,10 @@
 import React, { JSX, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Task from "./Task";
 
 interface EditTodoFormProps {
     tasks: Task[];
+    editTodo(index: number, todo: Task): void;
 }
 
 function EditTodoForm(props: EditTodoFormProps): JSX.Element {
@@ -12,12 +13,13 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     const taskId: number = parseInt(params.id);
     const [todoName, setTodoName] = useState<string>(props.tasks[taskId].taskName);
     const [todoUrgency, setTodoUrgency] = useState<string>(props.tasks[taskId].taskUrgency.toString());
+    const navigate = useNavigate();
 
     const handleTodoNameChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
-            setTodoName((): string => {
-                return event.target.value;
-            });
-        }
+        setTodoName((): string => {
+            return event.target.value;
+        });
+    }
     
     const handleTodoUrgencyChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setTodoUrgency((tu: string): string => {
@@ -33,7 +35,12 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     }
 
     const handleEdit: React.MouseEventHandler<HTMLButtonElement> = (): void => {
-        throw new Error("Edit function not implemented yet");
+        const updatedTask: Task = {
+            taskName: "Updated task name",
+            taskUrgency: 4
+        }
+        props.editTodo(taskId, updatedTask);
+        navigate('/');
     }
 
     const handleCancel: React.MouseEventHandler<HTMLButtonElement> = (): void => {
