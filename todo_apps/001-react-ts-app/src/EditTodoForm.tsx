@@ -1,5 +1,5 @@
 import React, { JSX, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Task from "./Task";
 
 interface EditTodoFormProps {
@@ -56,8 +56,7 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
 
     return (
         <>
-            <h1>Edit todo form for task at index {params.id}</h1>
-            <Link to={"/"}>Home</Link>
+            <h1>Edit Todo</h1>
             <br></br>
             <label htmlFor="todo-name">Task Name: </label>
             <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input" id="todo-name"/>
