@@ -50,7 +50,7 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     }
 
     const handleCancel: React.MouseEventHandler<HTMLButtonElement> = (): void => {
-        throw new Error("Cancel function not implemented yet");
+        navigate('/');
     }
     
 
