@@ -40,6 +40,8 @@ function AddTodoForm(props: AddTodoFormProps): JSX.Element {
             taskUrgency: todoUrgencyLevel
         }
         props.addTodo(newTodo);
+        setTodoName("");
+        setTodoUrgency("");
     }
 
     return (
