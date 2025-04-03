@@ -1,0 +1,6 @@
+app-name: "001-react-ts-app"
+
+app-tech-stack:
+  - TypeScript
+  - React
+  - Vite
