@@ -10,9 +10,9 @@ interface EditTodoFormProps {
 function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     // TODO: Create common UI form component to use in EditTodoForm and AddTodoForm
     const params = useParams() as {id: string};
-    const taskId: number = parseInt(params.id);
-    const [todoName, setTodoName] = useState<string>(props.tasks[taskId].taskName);
-    const [todoUrgency, setTodoUrgency] = useState<string>(props.tasks[taskId].taskUrgency.toString());
+    const taskIndex: number = parseInt(params.id);
+    const [todoName, setTodoName] = useState<string>(props.tasks[taskIndex].taskName);
+    const [todoUrgency, setTodoUrgency] = useState<string>(props.tasks[taskIndex].taskUrgency.toString());
     const navigate = useNavigate();
 
     const handleTodoNameChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -43,9 +43,10 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
         }
         const updatedTask: Task = {
             taskName: todoNameTrimmed,
-            taskUrgency: todoUrgencyLevel
+            taskUrgency: todoUrgencyLevel,
+            taskId: props.tasks[taskIndex].taskId
         }
-        props.editTodo(taskId, updatedTask);
+        props.editTodo(taskIndex, updatedTask);
         navigate('/');
     }
 

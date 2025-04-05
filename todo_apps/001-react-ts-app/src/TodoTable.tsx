@@ -32,6 +32,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
         <table>
             <thead>
                 <tr>
+                    <th>Task ID</th>
                     <th>Task Name</th>
                     <th>Urgency Level</th>
                     <th>Edit Task</th>

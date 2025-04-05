@@ -1,5 +1,6 @@
 import React, { JSX, useState } from "react"
 import Task from "./Task";
+import { v4 as uuidv4 } from "uuid";
 
 interface AddTodoFormProps {
     addTodo(todo: Task): void;
@@ -37,7 +38,8 @@ function AddTodoForm(props: AddTodoFormProps): JSX.Element {
         }
         const newTodo: Task = {
             taskName: todoNameTrimmed,
-            taskUrgency: todoUrgencyLevel
+            taskUrgency: todoUrgencyLevel,
+            taskId: uuidv4()
         }
         props.addTodo(newTodo);
         setTodoName("");

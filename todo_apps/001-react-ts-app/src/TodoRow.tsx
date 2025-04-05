@@ -10,6 +10,7 @@ interface TodoRowProps {
 function TodoRow(props: TodoRowProps): JSX.Element {
     return (
         <tr>
+            <td>{props.task.taskId}</td>
             <td>{props.task.taskName}</td>
             <td>{props.task.taskUrgency}</td>
             <td>
