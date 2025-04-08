@@ -17,8 +17,8 @@ function App(): JSX.Element {
     setTasks((t: Task[]): Task[] => t.filter((_element: Task, idx: number) => idx!==index));
   }
 
-  function updateTask(updateIndex: number, updatedTask: Task): void{
-    setTasks((t: Task[]): Task[] => t.map((value: Task, index: number) => index===updateIndex ? updatedTask : value))
+  function updateTask(updatedTask: Task): void{
+    setTasks((t: Task[]): Task[] => t.map((value: Task) => value.taskId===updatedTask.taskId ? updatedTask : value))
   }
   
   return (

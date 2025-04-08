@@ -4,16 +4,16 @@ import Task from "./Task";
 
 interface EditTodoFormProps {
     tasks: Task[];
-    editTodo(index: number, todo: Task): void;
+    editTodo(todo: Task): void;
 }
 
 function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     // TODO: Create common UI form component to use in EditTodoForm and AddTodoForm
     const params = useParams() as {id: string};
-    const taskIndex: number = parseInt(params.id);
-    const taskId: string = props.tasks[taskIndex].taskId;
-    const [todoName, setTodoName] = useState<string>(props.tasks[taskIndex].taskName);
-    const [todoUrgency, setTodoUrgency] = useState<string>(props.tasks[taskIndex].taskUrgency.toString());
+    const taskId: string = params.id;
+    const currentTask: Task = props.tasks.find((task) => task.taskId===taskId) as Task  // TODO: Handle 404 error for invalid id
+    const [todoName, setTodoName] = useState<string>(currentTask.taskName);
+    const [todoUrgency, setTodoUrgency] = useState<string>(currentTask.taskUrgency.toString());
     const navigate = useNavigate();
 
     const handleTodoNameChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -47,7 +47,7 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
             taskUrgency: todoUrgencyLevel,
             taskId
         }
-        props.editTodo(taskIndex, updatedTask);
+        props.editTodo(updatedTask);
         navigate('/');
     }
 

@@ -16,8 +16,8 @@ function TodoTable(props: TodoTableProps): JSX.Element {
         props.deleteTodo(index);
     }
 
-    const handleEditTask = (index: number) => {
-        navigate(`/edit/${index}`);
+    const handleEditTask = (taskId: string) => {
+        navigate(`/edit/${taskId}`);
     }
 
     if(props.tasks.length==0){
@@ -41,7 +41,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
             <tbody>
                 {props.tasks.map((task: Task, index: number): ReactNode => {
                     return(
-                        <TodoRow task={task} key={index} onRemove={() => handleRemoveTask(index)} onEdit={() => handleEditTask(index)}/>
+                        <TodoRow task={task} key={index} onRemove={() => handleRemoveTask(index)} onEdit={() => handleEditTask(task.taskId)}/>
                     )
                 })}
             </tbody>
