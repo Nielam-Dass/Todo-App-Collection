@@ -11,6 +11,7 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     // TODO: Create common UI form component to use in EditTodoForm and AddTodoForm
     const params = useParams() as {id: string};
     const taskIndex: number = parseInt(params.id);
+    const taskId: string = props.tasks[taskIndex].taskId;
     const [todoName, setTodoName] = useState<string>(props.tasks[taskIndex].taskName);
     const [todoUrgency, setTodoUrgency] = useState<string>(props.tasks[taskIndex].taskUrgency.toString());
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
         const updatedTask: Task = {
             taskName: todoNameTrimmed,
             taskUrgency: todoUrgencyLevel,
-            taskId: props.tasks[taskIndex].taskId
+            taskId
         }
         props.editTodo(taskIndex, updatedTask);
         navigate('/');
@@ -58,7 +59,7 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     return (
         <>
             <h1>Edit Todo</h1>
-            <br></br>
+            <p>Task ID: {taskId}</p>
             <label htmlFor="todo-name">Task Name: </label>
             <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input" id="todo-name"/>
             <br></br>
