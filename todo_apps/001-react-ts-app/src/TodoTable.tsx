@@ -41,7 +41,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
             <tbody>
                 {props.tasks.map((task: Task, index: number): ReactNode => {
                     return(
-                        <TodoRow task={task} key={index} onRemove={() => handleRemoveTask(index)} onEdit={() => handleEditTask(task.taskId)}/>
+                        <TodoRow task={task} key={task.taskId} onRemove={() => handleRemoveTask(index)} onEdit={() => handleEditTask(task.taskId)}/>
                     )
                 })}
             </tbody>
