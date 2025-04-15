@@ -1,5 +1,17 @@
-import { expect, test } from 'vitest';
+import { expect, describe, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 
-test('Basic addition test', () => {
-    expect(1 + 2 + 3).toBe(6);
+import App from '../App';
+import { StaticRouter } from 'react-router-dom';
+
+describe("App component tests", () => {
+    it("Renders app title", () => {
+        render(
+            <StaticRouter location={'/'}>
+                <App/>
+            </StaticRouter>
+        );
+        expect(screen.getByText("Todo App")).toBeInTheDocument();
+    });
 });
