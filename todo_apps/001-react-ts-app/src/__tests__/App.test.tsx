@@ -14,4 +14,13 @@ describe("App component tests", () => {
         );
         expect(screen.getByText("Todo App")).toBeInTheDocument();
     });
+
+    it("Displays the empty todo table message", () => {
+        render(
+            <StaticRouter location={'/'}>
+                <App/>
+            </StaticRouter>
+        );
+        expect(screen.getByText("There are no tasks left")).toBeInTheDocument();
+    });
 });
