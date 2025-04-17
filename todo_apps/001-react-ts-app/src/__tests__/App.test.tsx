@@ -23,4 +23,13 @@ describe("App component tests", () => {
         );
         expect(screen.getByText("There are no tasks left")).toBeInTheDocument();
     });
+
+    it("Displays not found message", () => {
+        render(
+            <StaticRouter location={'/does-not-exist'}>
+                <App/>
+            </StaticRouter>
+        );
+        expect(screen.getByText("Page Not Found")).toBeInTheDocument();
+    });
 });
