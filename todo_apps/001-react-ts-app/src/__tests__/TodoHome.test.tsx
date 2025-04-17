@@ -15,4 +15,22 @@ describe("Todo home page tests", () => {
         );
         expect(screen.getByText("Todo App")).toBeInTheDocument();
     });
+
+    it("Displays empty todo table message", () => {
+        render(
+            <MemoryRouter>
+                <TodoHome tasks={[]} addTask={()=>{}} deleteTask={()=>{}}/>
+            </MemoryRouter>
+        );
+        expect(screen.queryByText("There are no tasks left")).toBeInTheDocument();
+    });
+
+    it("Does NOT display empty todo table message", () => {
+        render(
+            <MemoryRouter>
+                <TodoHome tasks={[{taskId: "id-1", taskName: "Task 1", taskUrgency: 1}]} addTask={()=>{}} deleteTask={()=>{}}/>
+            </MemoryRouter>
+        );
+        expect(screen.queryByText("There are no tasks left")).not.toBeInTheDocument();
+    });
 });
