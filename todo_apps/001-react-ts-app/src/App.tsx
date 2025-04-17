@@ -26,6 +26,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path="/" element={<TodoHome tasks={tasks} addTask={addTask} deleteTask={deleteTask}/>}/>
         <Route path="/edit/:id" element={<EditTodoForm tasks={tasks} editTodo={updateTask}/>}/>
+        <Route path="*" element={<h1>Page Not Found</h1>}/>
       </Routes>
     </>
   )
