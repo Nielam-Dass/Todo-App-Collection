@@ -1,6 +1,7 @@
 import React, { JSX, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Task from "./Task";
+import NotFound from "./NotFound";
 
 interface EditTodoFormProps {
     tasks: Task[];
@@ -11,7 +12,12 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     // TODO: Create common UI form component to use in EditTodoForm and AddTodoForm
     const params = useParams() as {id: string};
     const taskId: string = params.id;
-    const currentTask: Task = props.tasks.find((task) => task.taskId===taskId) as Task  // TODO: Handle 404 error for invalid id
+    const currentTask: Task | undefined = props.tasks.find((task) => task.taskId===taskId);
+    if(currentTask === undefined){
+        return (
+            <NotFound/>
+        )
+    }
     const [todoName, setTodoName] = useState<string>(currentTask.taskName);
     const [todoUrgency, setTodoUrgency] = useState<string>(currentTask.taskUrgency.toString());
     const navigate = useNavigate();
