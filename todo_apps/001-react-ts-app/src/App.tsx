@@ -3,6 +3,7 @@ import TodoHome from "./TodoHome";
 import { Route, Routes } from "react-router-dom";
 import Task from "./Task";
 import EditTodoForm from "./EditTodoForm";
+import NotFound from "./NotFound";
 
 function App(): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -26,7 +27,7 @@ function App(): JSX.Element {
       <Routes>
         <Route path="/" element={<TodoHome tasks={tasks} addTask={addTask} deleteTask={deleteTask}/>}/>
         <Route path="/edit/:id" element={<EditTodoForm tasks={tasks} editTodo={updateTask}/>}/>
-        <Route path="*" element={<h1>Page Not Found</h1>}/>
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
     </>
   )
