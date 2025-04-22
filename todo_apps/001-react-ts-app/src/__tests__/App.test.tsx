@@ -24,9 +24,18 @@ describe("App component tests", () => {
         expect(screen.getByText("There are no tasks left")).toBeInTheDocument();
     });
 
-    it("Displays not found message", () => {
+    it("Displays not found message for wrong route", () => {
         render(
             <StaticRouter location={'/does-not-exist'}>
+                <App/>
+            </StaticRouter>
+        );
+        expect(screen.getByText("Page Not Found")).toBeInTheDocument();
+    });
+
+    it("Displays not found message for invalid edit route", () => {
+        render(
+            <StaticRouter location={'/edit/1'}>
                 <App/>
             </StaticRouter>
         );
