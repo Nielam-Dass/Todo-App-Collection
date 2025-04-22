@@ -23,6 +23,7 @@ describe("Todo home page tests", () => {
             </MemoryRouter>
         );
         expect(screen.queryByText("There are no tasks left")).toBeInTheDocument();
+        expect(screen.queryByRole("table")).not.toBeInTheDocument();
     });
 
     it("Does NOT display empty todo table message", () => {
@@ -32,5 +33,6 @@ describe("Todo home page tests", () => {
             </MemoryRouter>
         );
         expect(screen.queryByText("There are no tasks left")).not.toBeInTheDocument();
+        expect(screen.queryByRole("table")).toBeInTheDocument();
     });
 });
