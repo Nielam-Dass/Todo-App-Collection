@@ -28,7 +28,7 @@ describe("TodoSpecForm component tests", () => {
     it("Accepts valid todo name input string", async () => {
         render(<TodoSpecFormWrapper/>);
         const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
-        expect(todoNameInputField).toHaveValue(null);
+        expect(todoNameInputField).toHaveValue("");
         await userEvent.type(todoNameInputField, "Important Task");
         expect(todoNameInputField).toHaveValue("Important Task");
     });
