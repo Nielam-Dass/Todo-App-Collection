@@ -2,6 +2,7 @@ import React, { JSX, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Task from "./Task";
 import NotFound from "./NotFound";
+import TodoSpecForm from "./TodoSpecForm";
 
 interface EditTodoFormProps {
     tasks: Task[];
@@ -9,7 +10,6 @@ interface EditTodoFormProps {
 }
 
 function EditTodoForm(props: EditTodoFormProps): JSX.Element {
-    // TODO: Create common UI form component to use in EditTodoForm and AddTodoForm
     const params = useParams() as {id: string};
     const taskId: string = params.id;
     const currentTask: Task | undefined = props.tasks.find((task) => task.taskId===taskId);
@@ -21,25 +21,6 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
     const [todoName, setTodoName] = useState<string>(currentTask.taskName);
     const [todoUrgency, setTodoUrgency] = useState<string>(currentTask.taskUrgency.toString());
     const navigate = useNavigate();
-
-    const handleTodoNameChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setTodoName((): string => {
-            return event.target.value;
-        });
-    }
-    
-    const handleTodoUrgencyChange: React.ChangeEventHandler<HTMLInputElement> = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setTodoUrgency((tu: string): string => {
-            const urgencyLevel: number = parseInt(event.target.value);
-            if(Number.isNaN(urgencyLevel)) {
-                return "";
-            }
-            else if(urgencyLevel>=1 && urgencyLevel<=10) {
-                return urgencyLevel.toString();
-            }
-            return tu;
-        });
-    }
 
     const handleEdit: React.MouseEventHandler<HTMLButtonElement> = (): void => {
         const todoUrgencyLevel: number = parseInt(todoUrgency);
@@ -66,12 +47,7 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
         <>
             <h1>Edit Todo</h1>
             <p>Task ID: {taskId}</p>
-            <label htmlFor="todo-name">Task Name: </label>
-            <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input" id="todo-name"/>
-            <br></br>
-            <label htmlFor="todo-urgency">Task Urgency Level (1-10): </label>
-            <input type="number" onChange={handleTodoUrgencyChange} value={todoUrgency} min="1" max="10" className="todo-urgency-input" id="todo-urgency"/>
-            <br></br>
+            <TodoSpecForm todoName={todoName} todoUrgency={todoUrgency} setTodoName={setTodoName} setTodoUrgency={setTodoUrgency}/>
             <button onClick={handleEdit}>Edit</button>
             <button onClick={handleCancel}>Cancel</button>
         </>
