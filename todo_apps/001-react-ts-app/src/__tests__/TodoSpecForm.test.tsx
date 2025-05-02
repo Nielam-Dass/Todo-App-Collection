@@ -7,9 +7,9 @@ import "@testing-library/jest-dom/vitest";
 import TodoSpecForm from "../TodoSpecForm";
 
 
-function TodoSpecFormWrapper(): JSX.Element {
-    const [todoName, setTodoName] = useState<string>("");
-    const [todoUrgency, setTodoUrgency] = useState<string>("");
+function TodoSpecFormWrapper({todoNameInit="", todoUrgencyInit=""}: {todoNameInit?: string, todoUrgencyInit?: string}): JSX.Element {
+    const [todoName, setTodoName] = useState<string>(todoNameInit);
+    const [todoUrgency, setTodoUrgency] = useState<string>(todoUrgencyInit);
     
     return (
         <>
@@ -53,5 +53,43 @@ describe("TodoSpecForm component tests", () => {
         await userEvent.clear(todoUrgencyInputField);
         await userEvent.type(todoUrgencyInputField, "11");
         expect(todoUrgencyInputField).toHaveValue(1);
+    });
+
+    it("Renders component with the correct initial values", () => {
+        render(<TodoSpecFormWrapper todoNameInit="Initial task name" todoUrgencyInit="4"/>);
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        expect(todoNameInputField).toHaveValue("Initial task name");
+        expect(todoUrgencyInputField).toHaveValue(4);
+    });
+
+    it("Allows changes to todoName initial value", async () => {
+        render(<TodoSpecFormWrapper todoNameInit="Initial task name" todoUrgencyInit="4"/>);
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        expect(todoNameInputField).toHaveValue("Initial task name");
+        await userEvent.type(todoNameInputField, " ABC");
+        expect(todoNameInputField).toHaveValue("Initial task name ABC");
+        await userEvent.type(todoNameInputField, "{backspace}{backspace}{backspace}{backspace}");
+        expect(todoNameInputField).toHaveValue("Initial task name");
+    });
+
+    it("Allows valid changes to todoUrgency initial value", async () => {
+        render(<TodoSpecFormWrapper todoNameInit="Initial task name" todoUrgencyInit="1"/>);
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        expect(todoUrgencyInputField).toHaveValue(1);
+        await userEvent.type(todoUrgencyInputField, "0");
+        expect(todoUrgencyInputField).toHaveValue(10);
+        await userEvent.type(todoUrgencyInputField, "{backspace}");
+        expect(todoUrgencyInputField).toHaveValue(1);
+    });
+
+    it("Does not allow invalid changes to todoUrgency initial value", async () => {
+        render(<TodoSpecFormWrapper todoNameInit="Initial task name" todoUrgencyInit="4"/>);
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        expect(todoUrgencyInputField).toHaveValue(4);
+        await userEvent.type(todoUrgencyInputField, "0");
+        expect(todoUrgencyInputField).toHaveValue(4);
+        await userEvent.type(todoUrgencyInputField, "{arrowleft}-");
+        expect(todoUrgencyInputField).toHaveValue(4);
     });
 });
