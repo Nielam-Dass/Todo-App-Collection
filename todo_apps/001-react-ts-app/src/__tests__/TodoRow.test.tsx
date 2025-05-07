@@ -7,7 +7,13 @@ import TodoRow from '../TodoRow';
 
 describe("TodoRow component tests", () => {
     it("Renders the component", () => {
-        render(<TodoRow task={{taskId: "123", taskName:"Important task", taskUrgency: 4}} onEdit={()=>{}} onRemove={()=>{}}/>);
+        render(
+            <table>
+                <tbody>
+                    <TodoRow task={{taskId: "123", taskName:"Important task", taskUrgency: 4}} onEdit={()=>{}} onRemove={()=>{}}/>
+                </tbody>
+            </table>
+        );
         expect(screen.queryByText("Important task")).toBeInTheDocument();
         expect(screen.queryByText("123")).not.toBeInTheDocument();
         expect(screen.queryByRole("button", {name: "Edit"})).toBeInTheDocument();
@@ -17,7 +23,13 @@ describe("TodoRow component tests", () => {
     it("Calls the onEdit function when button is clicked", async () => {
         const handleEditMock: ()=>void = vi.fn();
         const handleRemoveMock: ()=>void = vi.fn();
-        render(<TodoRow task={{taskId: "123", taskName:"Important task", taskUrgency: 4}} onEdit={handleEditMock} onRemove={handleRemoveMock}/>);
+        render(
+            <table>
+                <tbody>
+                    <TodoRow task={{taskId: "123", taskName:"Important task", taskUrgency: 4}} onEdit={handleEditMock} onRemove={handleRemoveMock}/>
+                </tbody>
+            </table>
+        );
         const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
 
         expect(handleEditMock).toHaveBeenCalledTimes(0);
@@ -31,7 +43,13 @@ describe("TodoRow component tests", () => {
     it("Calls the onRemove function when button is clicked", async () => {
         const handleEditMock: ()=>void = vi.fn();
         const handleRemoveMock: ()=>void = vi.fn();
-        render(<TodoRow task={{taskId: "123", taskName:"Important task", taskUrgency: 4}} onEdit={handleEditMock} onRemove={handleRemoveMock}/>);
+        render(
+            <table>
+                <tbody>
+                    <TodoRow task={{taskId: "123", taskName:"Important task", taskUrgency: 4}} onEdit={handleEditMock} onRemove={handleRemoveMock}/>
+                </tbody>
+            </table>
+        );
         const removeButton: HTMLElement = screen.getByRole("button", {name: "Remove"});
         
         expect(handleEditMock).toHaveBeenCalledTimes(0);
