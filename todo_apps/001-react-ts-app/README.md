@@ -5,8 +5,14 @@ This application allows you to manage your list of tasks stored in memory. For e
 - TypeScript
 - React
 - Vite
+- Docker
 
-## Running the app
+## Running the app in dev mode
 1. Download this folder
 2. Run `npm install`
 3. Run `npm run dev`
+
+## Running the app in Docker
+1. Run `npm run build`
+2. Run `docker build --tag todo-app .`
+3. Run `docker run --detach -p80:80 todo-app`
