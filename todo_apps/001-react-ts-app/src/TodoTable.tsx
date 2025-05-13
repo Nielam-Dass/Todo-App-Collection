@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 
 interface TodoTableProps {
     tasks: Task[];
-    deleteTodo(index: number): void;
+    deleteTodo(deleteId: string): void;
 }
 
 function TodoTable(props: TodoTableProps): JSX.Element {
     const navigate = useNavigate();
 
-    const handleRemoveTask = (index: number): void => {
-        props.deleteTodo(index);
+    const handleRemoveTask = (removeId: string): void => {
+        props.deleteTodo(removeId);
     }
 
     const handleEditTask = (taskId: string) => {
@@ -39,9 +39,9 @@ function TodoTable(props: TodoTableProps): JSX.Element {
                 </tr>
             </thead>
             <tbody>
-                {props.tasks.map((task: Task, index: number): ReactNode => {
+                {props.tasks.map((task: Task): ReactNode => {
                     return(
-                        <TodoRow task={task} key={task.taskId} onRemove={() => handleRemoveTask(index)} onEdit={() => handleEditTask(task.taskId)}/>
+                        <TodoRow task={task} key={task.taskId} onRemove={() => handleRemoveTask(task.taskId)} onEdit={() => handleEditTask(task.taskId)}/>
                     )
                 })}
             </tbody>

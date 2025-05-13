@@ -14,8 +14,8 @@ function App(): JSX.Element {
     });
   }
 
-  function deleteTask(index: number): void{
-    setTasks((t: Task[]): Task[] => t.filter((_element: Task, idx: number) => idx!==index));
+  function deleteTask(deleteId: string): void{
+    setTasks((t: Task[]): Task[] => t.filter((element: Task) => element.taskId!==deleteId));
   }
 
   function updateTask(updatedTask: Task): void{

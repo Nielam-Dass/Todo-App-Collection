@@ -6,7 +6,7 @@ import Task from "./Task";
 interface TodoHomeProps {
   tasks: Task[];
   addTask(task: Task): void;
-  deleteTask(index: number): void;
+  deleteTask(deleteId: string): void;
 }
 
 function TodoHome(props: TodoHomeProps): JSX.Element {
