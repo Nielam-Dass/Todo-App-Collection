@@ -65,4 +65,42 @@ describe("App component tests", () => {
         expect(screen.queryByRole("table")).toBeInTheDocument();
         expect(screen.queryByText("Important task")).toBeInTheDocument();
     });
+
+    it("Adds multiple todos through form submissions to the table with rows ordered by urgency level", async () => {
+        render(
+            <StaticRouter location={'/'}>
+                <App/>
+            </StaticRouter>
+        );
+        expect(screen.queryByText("There are no tasks left")).toBeInTheDocument();
+        expect(screen.queryByRole("table")).not.toBeInTheDocument();
+
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        await userEvent.type(todoNameInputField, "My task");
+        await userEvent.type(todoUrgencyInputField, "5");
+        await userEvent.click(addButton);
+
+        await userEvent.type(todoNameInputField, "My other task");
+        await userEvent.type(todoUrgencyInputField, "8");
+        await userEvent.click(addButton);
+
+        await userEvent.type(todoNameInputField, "Another task");
+        await userEvent.type(todoUrgencyInputField, "3");
+        await userEvent.click(addButton);
+
+        await userEvent.type(todoNameInputField, "Extra task");
+        await userEvent.type(todoUrgencyInputField, "4");
+        await userEvent.click(addButton);
+
+        const todoRows: HTMLElement[] = screen.queryAllByRole("row").slice(1);
+        expect(todoRows).toHaveLength(4);
+
+        expect(todoRows[0]).toHaveTextContent("My other task");
+        expect(todoRows[1]).toHaveTextContent("My task");
+        expect(todoRows[2]).toHaveTextContent("Extra task");
+        expect(todoRows[3]).toHaveTextContent("Another task");
+    });
 });
