@@ -1,9 +1,10 @@
-import { expect, describe, it } from 'vitest';
+import { expect, describe, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 
 import AddTodoForm from '../AddTodoForm';
+import Task from '../Task';
 
 describe('AddTodoForm component tests', () => {
     it("Accepts valid text in input fields", async () => {
@@ -53,4 +54,26 @@ describe('AddTodoForm component tests', () => {
 
         expect(todoUrgencyInputField).toHaveValue(null);
     });
-})
+
+    it("Calls addTodo function when button is clicked", async () => {
+        const addTodoMock: (task: Task)=>void = vi.fn();
+        render(
+            <AddTodoForm addTodo={addTodoMock}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+
+        await userEvent.type(todoNameInputField, "My task");
+        await userEvent.type(todoUrgencyInputField, "10");
+
+        expect(todoNameInputField).toHaveValue("My task");
+        expect(todoUrgencyInputField).toHaveValue(10);
+        expect(addTodoMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(addButton);
+
+        expect(addTodoMock).toHaveBeenCalledTimes(1);
+        expect(addTodoMock).toHaveBeenLastCalledWith(expect.objectContaining({taskName: "My task", taskUrgency: 10}));
+    });
+});
