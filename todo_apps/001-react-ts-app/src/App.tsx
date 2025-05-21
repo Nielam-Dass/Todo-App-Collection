@@ -10,7 +10,22 @@ function App(): JSX.Element {
 
   function addTask(newTask: Task): void{
     setTasks((t: Task[]): Task[] => {
-      return [...t, newTask];
+      let tasksUpdated: Task[] = [];
+      let taskInserted: boolean = false;
+
+      for(let i: number=0; i<t.length; i++){
+        if(!taskInserted && (newTask.taskUrgency > t[i].taskUrgency)){
+          tasksUpdated.push(newTask);
+          taskInserted = true;
+        }
+        tasksUpdated.push(t[i]);
+      }
+      if(!taskInserted){
+        tasksUpdated.push(newTask);
+        taskInserted = true;
+      }
+
+      return tasksUpdated;
     });
   }
 
