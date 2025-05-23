@@ -96,4 +96,23 @@ describe('AddTodoForm component tests', () => {
         expect(window.alert).toHaveBeenCalledTimes(1);
         expect(window.alert).toHaveBeenLastCalledWith("Must provide valid task name and urgency level!");
     });
+
+    it("Does not call addTodo function when submitting form with invalid values", async () => {
+        const addTodoMock: (task: Task)=>void = vi.fn();
+        render(
+            <AddTodoForm addTodo={addTodoMock}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+
+        await userEvent.type(todoNameInputField, "My task");
+        await userEvent.type(todoUrgencyInputField, "0");
+
+        expect(addTodoMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(addButton);
+
+        expect(addTodoMock).toHaveBeenCalledTimes(0);
+    });
 });
