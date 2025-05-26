@@ -56,7 +56,7 @@ describe('AddTodoForm component tests', () => {
     });
 
     it("Calls addTodo function when button is clicked", async () => {
-        const addTodoMock: (task: Task)=>void = vi.fn();
+        const addTodoMock = vi.fn<(task: Task)=>void>();
         render(
             <AddTodoForm addTodo={addTodoMock}/>
         );
@@ -78,7 +78,7 @@ describe('AddTodoForm component tests', () => {
     });
 
     it("Displays alert message when submitting form with invalid values", async () => {
-        window.alert = vi.fn();
+        window.alert = vi.fn<(msg: string)=>void>();
         render(
             <AddTodoForm addTodo={() => {}}/>
         );
@@ -98,7 +98,7 @@ describe('AddTodoForm component tests', () => {
     });
 
     it("Does not call addTodo function when submitting form with invalid values", async () => {
-        const addTodoMock: (task: Task)=>void = vi.fn();
+        const addTodoMock = vi.fn<(task: Task)=>void>();
         render(
             <AddTodoForm addTodo={addTodoMock}/>
         );

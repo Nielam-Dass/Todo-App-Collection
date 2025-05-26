@@ -21,8 +21,8 @@ describe("TodoRow component tests", () => {
     });
 
     it("Calls the onEdit function when button is clicked", async () => {
-        const handleEditMock: ()=>void = vi.fn();
-        const handleRemoveMock: ()=>void = vi.fn();
+        const handleEditMock = vi.fn<()=>void>();
+        const handleRemoveMock = vi.fn<()=>void>();
         render(
             <table>
                 <tbody>
@@ -41,8 +41,8 @@ describe("TodoRow component tests", () => {
     });
 
     it("Calls the onRemove function when button is clicked", async () => {
-        const handleEditMock: ()=>void = vi.fn();
-        const handleRemoveMock: ()=>void = vi.fn();
+        const handleEditMock = vi.fn<()=>void>();
+        const handleRemoveMock = vi.fn<()=>void>();
         render(
             <table>
                 <tbody>

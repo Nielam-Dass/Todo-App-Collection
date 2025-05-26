@@ -62,7 +62,7 @@ describe("TodoTable component tests", () => {
     });
 
     it("Calls the deleteTodo function when button is clicked", async () => {
-        const deleteTodoMock: (delId: string)=>void = vi.fn();
+        const deleteTodoMock = vi.fn<(delId: string)=>void>();
         render(
             <MemoryRouter>
                 <TodoTable tasks={[{taskId: "1", taskName: "My task", taskUrgency: 4}]} deleteTodo={deleteTodoMock}/>
@@ -78,7 +78,7 @@ describe("TodoTable component tests", () => {
 
     it("Navigates to the edit route when button is clicked", async () => {
         vi.mock("react-router-dom", async () => {
-            const mockedNavigate: (to: string)=>void = vi.fn();
+            const mockedNavigate = vi.fn<(to: string)=>void>();
             return {
                 ... await vi.importActual("react-router-dom"),
                 useNavigate: () => mockedNavigate
