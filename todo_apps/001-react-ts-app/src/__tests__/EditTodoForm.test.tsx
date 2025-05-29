@@ -26,4 +26,10 @@ describe("EditTodoForm component tests", () => {
         expect(screen.getByRole("button", {name: "Edit"})).toBeInTheDocument();
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument();
     });
+
+    it("Displays the not found message for invalid edit route", () => {
+        render(<EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/456"/>);
+        expect(screen.queryByText("Edit Todo")).not.toBeInTheDocument();
+        expect(screen.getByText("Page Not Found")).toBeInTheDocument();
+    });
 });
