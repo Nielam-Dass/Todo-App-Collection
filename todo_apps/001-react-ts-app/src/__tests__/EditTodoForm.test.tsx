@@ -32,4 +32,11 @@ describe("EditTodoForm component tests", () => {
         expect(screen.queryByText("Edit Todo")).not.toBeInTheDocument();
         expect(screen.getByText("Page Not Found")).toBeInTheDocument();
     });
+
+    it("Prefills edit form with original values", () => {
+        render(<EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123"/>);
+        expect(screen.getByText("Edit Todo")).toBeInTheDocument();
+        expect(screen.getByLabelText("Task Name:")).toHaveValue("My task");
+        expect(screen.getByLabelText("Task Urgency Level (1-10):")).toHaveValue(4);
+    });
 });
