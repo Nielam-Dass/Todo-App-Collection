@@ -78,7 +78,6 @@ describe('AddTodoForm component tests', () => {
     });
 
     it("Displays alert message when submitting form with invalid values", async () => {
-        window.alert = vi.fn<(msg: string)=>void>();
         render(
             <AddTodoForm addTodo={() => {}}/>
         );
@@ -114,5 +113,23 @@ describe('AddTodoForm component tests', () => {
         await userEvent.click(addButton);
 
         expect(addTodoMock).toHaveBeenCalledTimes(0);
+    });
+
+    it("Does not display alert message when submitting form with valid values", async () => {
+        render(
+            <AddTodoForm addTodo={() => {}}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+
+        await userEvent.type(todoNameInputField, "My task");
+        await userEvent.type(todoUrgencyInputField, "1");
+
+        expect(window.alert).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(addButton);
+
+        expect(window.alert).toHaveBeenCalledTimes(0);
     });
 });
