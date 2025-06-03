@@ -63,4 +63,26 @@ describe("EditTodoForm component tests", () => {
         expect(editTodoMock).toHaveBeenCalledTimes(1);
         expect(editTodoMock).toHaveBeenLastCalledWith({taskId: "123", taskName: "My task", taskUrgency: 4});
     });
+
+    it("Invokes the editTodo function with updated values as the parameters", async () => {
+        const editTodoMock = vi.fn<(task: Task)=>void>();
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123" editTodo={editTodoMock}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+
+        await userEvent.clear(todoNameInputField);
+        await userEvent.type(todoNameInputField, "My updated task");
+        await userEvent.clear(todoUrgencyInputField);
+        await userEvent.type(todoUrgencyInputField, "6");
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(editButton);
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(1);
+        expect(editTodoMock).toHaveBeenLastCalledWith({taskId: "123", taskName: "My updated task", taskUrgency: 6});
+    });
 });
