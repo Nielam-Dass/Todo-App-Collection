@@ -1,25 +1,30 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 
-import { Route, Routes, StaticRouter } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { JSX } from "react";
 import EditTodoForm from "../EditTodoForm";
 import Task from "../Task";
+import userEvent from "@testing-library/user-event";
+
 
 function EditTodoFormWrapper({tasks, routeLocation, editTodo=()=>{}}: {tasks: Task[], routeLocation: string, editTodo?: (todo: Task)=>void}): JSX.Element {
     return (
-        <StaticRouter location={routeLocation} >
+        <MemoryRouter initialEntries={[routeLocation]} >
             <Routes>
                 <Route path="/edit/:id" element={<EditTodoForm tasks={tasks} editTodo={editTodo}/>}/>
+                <Route path="*" element={<></>}/>
             </Routes>
-        </StaticRouter>
+        </MemoryRouter>
     );
 }
 
 describe("EditTodoForm component tests", () => {
     it("Renders the edit form", () => {
-        render(<EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123"/>);
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123"/>
+        );
         expect(screen.getByText("Edit Todo")).toBeInTheDocument();
         expect(screen.getByLabelText("Task Name:")).toBeInTheDocument();
         expect(screen.getByLabelText("Task Urgency Level (1-10):")).toBeInTheDocument();
@@ -28,15 +33,34 @@ describe("EditTodoForm component tests", () => {
     });
 
     it("Displays the not found message for invalid edit route", () => {
-        render(<EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/456"/>);
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/456"/>
+        );
         expect(screen.queryByText("Edit Todo")).not.toBeInTheDocument();
         expect(screen.getByText("Page Not Found")).toBeInTheDocument();
     });
 
     it("Prefills edit form with original values", () => {
-        render(<EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123"/>);
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123"/>
+        );
         expect(screen.getByText("Edit Todo")).toBeInTheDocument();
         expect(screen.getByLabelText("Task Name:")).toHaveValue("My task");
         expect(screen.getByLabelText("Task Urgency Level (1-10):")).toHaveValue(4);
+    });
+
+    it("Invokes the editTodo function when button is clicked", async () => {
+        const editTodoMock = vi.fn<(task: Task)=>void>();
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123" editTodo={editTodoMock}/>
+        );
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(editButton);
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(1);
+        expect(editTodoMock).toHaveBeenLastCalledWith({taskId: "123", taskName: "My task", taskUrgency: 4});
     });
 });
