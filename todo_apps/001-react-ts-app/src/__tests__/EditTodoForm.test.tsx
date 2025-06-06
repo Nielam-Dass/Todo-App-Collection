@@ -106,4 +106,24 @@ describe("EditTodoForm component tests", () => {
         expect(window.alert).toHaveBeenCalledTimes(1);
         expect(window.alert).toHaveBeenLastCalledWith("Must provide valid task name and urgency level!");
     });
+
+    it("Does not display alert message when submitting edit form with valid values", async () => {
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123" editTodo={()=>{}}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+
+        await userEvent.clear(todoNameInputField);
+        await userEvent.type(todoNameInputField, "My updated task");
+        await userEvent.clear(todoUrgencyInputField);
+        await userEvent.type(todoUrgencyInputField, "10");
+        
+        expect(window.alert).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(editButton);
+        
+        expect(window.alert).toHaveBeenCalledTimes(0);
+    });
 });
