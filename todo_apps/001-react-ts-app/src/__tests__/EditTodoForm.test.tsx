@@ -126,4 +126,25 @@ describe("EditTodoForm component tests", () => {
         
         expect(window.alert).toHaveBeenCalledTimes(0);
     });
+
+    it("Does not invoke the editTodo function when submitting edit form with invalid values", async () => {
+        const editTodoMock = vi.fn<(task: Task)=>void>();
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123" editTodo={editTodoMock}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+
+        await userEvent.clear(todoNameInputField);
+        await userEvent.type(todoNameInputField, "My updated task");
+        await userEvent.clear(todoUrgencyInputField);
+        await userEvent.type(todoUrgencyInputField, "0");
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(editButton);
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(0);
+    });
 });
