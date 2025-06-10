@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { JSX } from "react";
 import EditTodoForm from "../EditTodoForm";
 import Task from "../Task";
-import userEvent from "@testing-library/user-event";
 
 
 function EditTodoFormWrapper({tasks, routeLocation, editTodo=()=>{}}: {tasks: Task[], routeLocation: string, editTodo?: (todo: Task)=>void}): JSX.Element {
@@ -146,5 +146,23 @@ describe("EditTodoForm component tests", () => {
         await userEvent.click(editButton);
         
         expect(editTodoMock).toHaveBeenCalledTimes(0);
+    });
+
+    it("Displays the correct task when multiple tasks exist", () => {
+        const taskList: Task[] = [
+            {taskId: "123", taskName: "My task", taskUrgency: 4}, 
+            {taskId: "456", taskName: "My second task", taskUrgency: 7},
+            {taskId: "789", taskName: "My task", taskUrgency: 8}
+        ];
+        render(
+            <EditTodoFormWrapper tasks={taskList} routeLocation="/edit/456"/>
+        );
+
+        expect(screen.getByText("Task ID: 456")).toBeInTheDocument();
+        expect(screen.getByLabelText("Task Name:")).toHaveValue("My second task");
+        expect(screen.getByLabelText("Task Urgency Level (1-10):")).toHaveValue(7);
+
+        expect(screen.queryByText("Task ID: 123")).not.toBeInTheDocument();
+        expect(screen.queryByText("Task ID: 789")).not.toBeInTheDocument();
     });
 });
