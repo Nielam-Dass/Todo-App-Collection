@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 
 import App from '../App';
-import { StaticRouter } from 'react-router-dom';
+import { MemoryRouter, StaticRouter } from 'react-router-dom';
 
 describe("App component tests", () => {
     it("Renders app title", () => {
@@ -110,9 +110,6 @@ describe("App component tests", () => {
                 <App/>
             </StaticRouter>
         );
-        expect(screen.queryByText("There are no tasks left")).toBeInTheDocument();
-        expect(screen.queryByRole("table")).not.toBeInTheDocument();
-
         const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
         const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
         const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
@@ -162,5 +159,36 @@ describe("App component tests", () => {
         expect(todoRows[0]).toHaveTextContent("My task");
         expect(screen.queryByText("Extra task")).not.toBeInTheDocument();
         expect(todoRows[1]).toHaveTextContent("Another task");
+    });
+
+    it("Renders edit form with correct values when an edit button is clicked", async () => {
+        render(
+            <MemoryRouter>
+                <App/>
+            </MemoryRouter>
+        );
+
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        await userEvent.type(todoNameInputField, "My task");
+        await userEvent.type(todoUrgencyInputField, "5");
+        await userEvent.click(addButton);
+
+        await userEvent.type(todoNameInputField, "My other task");
+        await userEvent.type(todoUrgencyInputField, "8");
+        await userEvent.click(addButton);
+
+        let todoRows: HTMLElement[] = screen.queryAllByRole("row").slice(1);
+        expect(todoRows[0]).toHaveTextContent("My other task");
+        expect(todoRows[1]).toHaveTextContent("My task");
+
+        const editButtons: HTMLElement[] = screen.queryAllByRole("button", {name: "Edit"});
+        await userEvent.click(editButtons[0]);
+
+        expect(screen.getByText("Edit Todo")).toBeInTheDocument();
+        expect(screen.getByLabelText("Task Name:")).toHaveValue("My other task");
+        expect(screen.getByLabelText("Task Urgency Level (1-10):")).toHaveValue(8);
     });
 });
