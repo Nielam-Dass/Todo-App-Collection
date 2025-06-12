@@ -191,4 +191,46 @@ describe("App component tests", () => {
         expect(screen.getByLabelText("Task Name:")).toHaveValue("My other task");
         expect(screen.getByLabelText("Task Urgency Level (1-10):")).toHaveValue(8);
     });
+
+    it("Updates values for single task through edit form", async () => {
+        render(
+            <MemoryRouter>
+                <App/>
+            </MemoryRouter>
+        );
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+        const addTodoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const addTodoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        await userEvent.type(addTodoNameInputField, "My task");
+        await userEvent.type(addTodoUrgencyInputField, "5");
+        await userEvent.click(addButton);
+
+        let todoRows: HTMLElement[] = screen.queryAllByRole("row").slice(1);
+        expect(todoRows).toHaveLength(1);
+        expect(todoRows[0]).toHaveTextContent("My task" + "5");
+
+        const editButtons: HTMLElement[] = screen.queryAllByRole("button", {name: "Edit"});
+        await userEvent.click(editButtons[0]);
+
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+        const editTodoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const editTodoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        expect(screen.getByText("Edit Todo")).toBeInTheDocument();
+        expect(editTodoNameInputField).toHaveValue("My task");
+        expect(editTodoUrgencyInputField).toHaveValue(5);
+
+        await userEvent.clear(editTodoNameInputField);
+        await userEvent.type(editTodoNameInputField, "My updated task");
+        await userEvent.clear(editTodoUrgencyInputField);
+        await userEvent.type(editTodoUrgencyInputField, "8");
+        await userEvent.click(editButton);
+
+        expect(screen.getByText("Todo App")).toBeInTheDocument();
+        expect(screen.queryByText("Edit Todo")).not.toBeInTheDocument();
+        todoRows = screen.queryAllByRole("row").slice(1);
+        expect(todoRows).toHaveLength(1);
+        expect(todoRows[0]).toHaveTextContent("My updated task" + "8");
+    });
 });
