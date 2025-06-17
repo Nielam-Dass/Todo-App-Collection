@@ -6,6 +6,7 @@ import '@testing-library/jest-dom/vitest';
 import App from '../App';
 import { MemoryRouter, StaticRouter } from 'react-router-dom';
 
+
 describe("App component tests", () => {
     it("Renders app title", () => {
         render(
@@ -232,5 +233,50 @@ describe("App component tests", () => {
         todoRows = screen.queryAllByRole("row").slice(1);
         expect(todoRows).toHaveLength(1);
         expect(todoRows[0]).toHaveTextContent("My updated task" + "8");
+    });
+
+    it("Reorders task rows after editing task urgency level", async () => {
+        render(
+            <MemoryRouter>
+                <App/>
+            </MemoryRouter>
+        );
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+        const addTodoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const addTodoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        await userEvent.type(addTodoNameInputField, "My task");
+        await userEvent.type(addTodoUrgencyInputField, "5");
+        await userEvent.click(addButton);
+
+        await userEvent.type(addTodoNameInputField, "My other task");
+        await userEvent.type(addTodoUrgencyInputField, "8");
+        await userEvent.click(addButton);
+
+        await userEvent.type(addTodoNameInputField, "Another task");
+        await userEvent.type(addTodoUrgencyInputField, "3");
+        await userEvent.click(addButton);
+
+        let todoRows: HTMLElement[] = screen.queryAllByRole("row").slice(1);
+        expect(todoRows).toHaveLength(3);
+        expect(todoRows[0]).toHaveTextContent("My other task" + "8");
+        expect(todoRows[1]).toHaveTextContent("My task" + "5");
+        expect(todoRows[2]).toHaveTextContent("Another task" + "3");
+
+        const editButtons: HTMLElement[] = screen.queryAllByRole("button", {name: "Edit"});
+        await userEvent.click(editButtons[1]);
+
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+        const editTodoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        await userEvent.clear(editTodoUrgencyInputField);
+        await userEvent.type(editTodoUrgencyInputField, "10");
+        await userEvent.click(editButton);
+
+        todoRows = screen.queryAllByRole("row").slice(1);
+        expect(todoRows).toHaveLength(3);
+        expect(todoRows[0]).toHaveTextContent("My task" + "10");
+        expect(todoRows[1]).toHaveTextContent("My other task" + "8");
+        expect(todoRows[2]).toHaveTextContent("Another task" + "3");
     });
 });
