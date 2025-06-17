@@ -53,4 +53,17 @@ describe("Todo home page tests", () => {
         expect(todoRows[1]).toHaveTextContent("Task 1" + "1");
         expect(todoRows[2]).toHaveTextContent("Task 2" + "5");
     });
+
+    it("Renders add todo form fields with empty initial values", () => {
+        render(
+            <MemoryRouter>
+                <TodoHome tasks={[]} addTask={()=>{}} deleteTask={()=>{}}/>
+            </MemoryRouter>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        expect(todoNameInputField).toHaveValue("");
+        expect(todoUrgencyInputField).toHaveValue(null);
+    });
 });
