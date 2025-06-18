@@ -1,7 +1,8 @@
 import { JSX, useState } from "react";
-import TodoHome from "./TodoHome";
 import { Route, Routes } from "react-router-dom";
+
 import Task from "./Task";
+import TodoHome from "./TodoHome";
 import EditTodoForm from "./EditTodoForm";
 import NotFound from "./NotFound";
 
@@ -34,7 +35,14 @@ function App(): JSX.Element {
   }
 
   function updateTask(updatedTask: Task): void{
-    setTasks((t: Task[]): Task[] => t.map((value: Task) => value.taskId===updatedTask.taskId ? updatedTask : value))
+    setTasks((t: Task[]): Task[] => {
+      let updatedTasks: Task[] = t.filter((value: Task) => value.taskId!==updatedTask.taskId);
+      let insertIndex = 0;
+      while(insertIndex<updatedTasks.length && updatedTasks[insertIndex].taskUrgency>=updatedTask.taskUrgency)
+        insertIndex++;
+      updatedTasks.splice(insertIndex, 0, updatedTask);
+      return updatedTasks;
+    });
   }
   
   return (
