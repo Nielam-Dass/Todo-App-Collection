@@ -1,5 +1,6 @@
-import { expect, describe, it } from 'vitest';
+import { expect, describe, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 
 import TodoHome from '../TodoHome';
@@ -65,5 +66,27 @@ describe("Todo home page tests", () => {
 
         expect(todoNameInputField).toHaveValue("");
         expect(todoUrgencyInputField).toHaveValue(null);
+    });
+
+    it("Calls addTask function when add button is clicked", async () => {
+        const addTaskMock = vi.fn<(t: Task)=>void>();
+        render(
+            <MemoryRouter>
+                <TodoHome tasks={[]} addTask={addTaskMock} deleteTask={()=>{}}/>
+            </MemoryRouter>
+        );
+
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+
+        expect(addTaskMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.type(todoNameInputField, "Important task");
+        await userEvent.type(todoUrgencyInputField, "7");
+        await userEvent.click(addButton);
+
+        expect(addTaskMock).toHaveBeenCalledTimes(1);
+        expect(addTaskMock).toHaveBeenLastCalledWith(expect.objectContaining({taskName: "Important task", taskUrgency: 7}));
     });
 });
