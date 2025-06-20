@@ -1,4 +1,5 @@
-import { JSX, useState } from "react";
+import { JSX } from "react";
+import { useLocalStorage } from "usehooks-ts";
 import { Route, Routes } from "react-router-dom";
 
 import Task from "./Task";
@@ -7,7 +8,7 @@ import EditTodoForm from "./EditTodoForm";
 import NotFound from "./NotFound";
 
 function App(): JSX.Element {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useLocalStorage<Task[]>("user-tasks-key", []);
 
   function addTask(newTask: Task): void{
     setTasks((t: Task[]): Task[] => {
