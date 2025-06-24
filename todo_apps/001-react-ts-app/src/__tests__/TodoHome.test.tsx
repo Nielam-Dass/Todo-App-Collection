@@ -89,4 +89,22 @@ describe("Todo home page tests", () => {
         expect(addTaskMock).toHaveBeenCalledTimes(1);
         expect(addTaskMock).toHaveBeenLastCalledWith(expect.objectContaining({taskName: "Important task", taskUrgency: 7}));
     });
+
+    it("Calls deleteTask function when add button is clicked", async () => {
+        const deleteTaskMock = vi.fn<(id: string)=>void>();
+        render(
+            <MemoryRouter>
+                <TodoHome tasks={[{taskId: "123", taskName: "Important task", taskUrgency: 7}]} addTask={()=>{}} deleteTask={deleteTaskMock}/>
+            </MemoryRouter>
+        );
+
+        const removeButton: HTMLElement = screen.getByRole("button", {name: "Remove"});
+
+        expect(deleteTaskMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(removeButton);
+
+        expect(deleteTaskMock).toHaveBeenCalledTimes(1);
+        expect(deleteTaskMock).toHaveBeenLastCalledWith("123");
+    });
 });
