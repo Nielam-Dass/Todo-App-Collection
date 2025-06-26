@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 
 import TodoHome from '../TodoHome';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
 import Task from '../Task';
 
 
@@ -106,5 +106,31 @@ describe("Todo home page tests", () => {
 
         expect(deleteTaskMock).toHaveBeenCalledTimes(1);
         expect(deleteTaskMock).toHaveBeenLastCalledWith("123");
+    });
+
+    it("Navigates to edit route when edit button is clicked", async () => {
+        vi.mock("react-router-dom", async () => {
+            const mockedNavigate = vi.fn<(to: string)=>void>();
+            return {
+                ... await vi.importActual("react-router-dom"),
+                useNavigate: () => mockedNavigate
+            }
+        });
+        render(
+            <MemoryRouter>
+                <TodoHome tasks={[{taskId: "123", taskName: "Important task", taskUrgency: 7}]} addTask={()=>{}} deleteTask={()=>{}}/>
+            </MemoryRouter>
+        );
+
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+
+        const useNavigateMock = vi.mocked(useNavigate);
+        const mockedNavigate = useNavigateMock();
+        expect(mockedNavigate).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(editButton);
+
+        expect(mockedNavigate).toHaveBeenCalledTimes(1);
+        expect(mockedNavigate).toHaveBeenLastCalledWith("/edit/123");
     });
 });
