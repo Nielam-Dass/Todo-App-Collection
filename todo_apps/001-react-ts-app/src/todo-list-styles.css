@@ -1,7 +1,31 @@
+body {
+    font-family: 'Arial';
+}
+
 table, th, td {
     border: 1px solid black;
 }
 
+th, td {
+    padding: 4px 10px;
+}
+
+th {
+    text-align: center;
+}
+
+td:has(button) {
+    text-align: center;
+}
+
 table {
     margin-top: 8px;
+}
+
+.no-tasks-message {
+    margin-top: 8px;
+}
+
+button {
+    margin: 2px;
 }

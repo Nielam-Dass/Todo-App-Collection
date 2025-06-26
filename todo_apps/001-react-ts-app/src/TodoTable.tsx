@@ -23,7 +23,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
     if(props.tasks.length==0){
         return (
             <>
-            <div>There are no tasks left</div>
+            <div className="no-tasks-message">There are no tasks left</div>
             </>
         )
     }
