@@ -1,10 +1,10 @@
-import { JSX, useState } from "react";
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 
 import TodoSpecForm from "../TodoSpecForm";
+import { JSX, useState } from "react";
 
 
 function TodoSpecFormWrapper({todoNameInit="", todoUrgencyInit=""}: {todoNameInit?: string, todoUrgencyInit?: string}): JSX.Element {
@@ -25,7 +25,7 @@ describe("TodoSpecForm component tests", () => {
         expect(screen.getByLabelText("Task Urgency Level (1-10):")).toBeInTheDocument();
     });
 
-    it("Accepts valid todo name input string", async () => {
+    it("Accepts valid todo name as input string", async () => {
         render(<TodoSpecFormWrapper/>);
         const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
         expect(todoNameInputField).toHaveValue("");
@@ -33,7 +33,7 @@ describe("TodoSpecForm component tests", () => {
         expect(todoNameInputField).toHaveValue("Important Task");
     });
 
-    it("Accepts valid todo urgency input level", async () => {
+    it("Accepts valid todo urgency level as input number", async () => {
         render(<TodoSpecFormWrapper/>);
         const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
         expect(todoUrgencyInputField).toHaveValue(null);
@@ -41,7 +41,7 @@ describe("TodoSpecForm component tests", () => {
         expect(todoUrgencyInputField).toHaveValue(10);
     });
 
-    it("Does not accept invalid todo urgency input level", async () => {
+    it("Does not accept invalid todo urgency level as input", async () => {
         render(<TodoSpecFormWrapper/>);
         const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
         expect(todoUrgencyInputField).toHaveValue(null);
