@@ -132,4 +132,23 @@ describe('AddTodoForm component tests', () => {
 
         expect(window.alert).toHaveBeenCalledTimes(0);
     });
+
+    it("Displays alert message when submitting form with only whitespace for task name", async () => {
+        render(
+            <AddTodoForm addTodo={() => {}}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+
+        await userEvent.type(todoNameInputField, "   ");
+        await userEvent.type(todoUrgencyInputField, "7");
+
+        expect(window.alert).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(addButton);
+
+        expect(window.alert).toHaveBeenCalledTimes(1);
+        expect(window.alert).toHaveBeenLastCalledWith("Must provide valid task name and urgency level!");
+    });
 });
