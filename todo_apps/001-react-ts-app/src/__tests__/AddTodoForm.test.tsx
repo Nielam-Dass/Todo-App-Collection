@@ -151,4 +151,25 @@ describe('AddTodoForm component tests', () => {
         expect(window.alert).toHaveBeenCalledTimes(1);
         expect(window.alert).toHaveBeenLastCalledWith("Must provide valid task name and urgency level!");
     });
+
+    it("Trims whitespace off task name before calling addTodo function", async () => {
+        const addTodoMock = vi.fn<(task: Task)=>void>();
+        render(
+            <AddTodoForm addTodo={addTodoMock}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const todoUrgencyInputField: HTMLElement = screen.getByLabelText("Task Urgency Level (1-10):");
+        const addButton: HTMLElement = screen.getByRole("button", {name: "Add Todo"});
+
+        await userEvent.type(todoNameInputField, "  My task   ");
+        await userEvent.type(todoUrgencyInputField, "10");
+
+        expect(addTodoMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(addButton);
+
+        expect(addTodoMock).toHaveBeenCalledTimes(1);
+        expect(addTodoMock).not.toHaveBeenLastCalledWith(expect.objectContaining({taskName: "  My task   ", taskUrgency: 10}));
+        expect(addTodoMock).toHaveBeenLastCalledWith(expect.objectContaining({taskName: "My task", taskUrgency: 10}));
+    });
 });
