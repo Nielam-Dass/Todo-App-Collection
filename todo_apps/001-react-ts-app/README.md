@@ -1,5 +1,5 @@
 # React TypeScript Todo App
-This application allows you to manage your list of tasks stored in memory. For each task, you can specify a name and and an urgency level between 1 and 10.
+This application allows you to manage a list of tasks stored in browser local storage. For each task, you can specify a name and an urgency level between 1 and 10. These tasks will be ordered from highest urgency (top) to lowest urgency (bottom).
 
 ## Tech Stack
 - TypeScript
