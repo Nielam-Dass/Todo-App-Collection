@@ -166,6 +166,26 @@ describe("EditTodoForm component tests", () => {
         expect(window.alert).toHaveBeenLastCalledWith("Must provide valid task name and urgency level!");
     });
 
+    it("Trims whitespace off task name before calling editTodo function", async () => {
+        const editTodoMock = vi.fn<(task: Task)=>void>();
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123" editTodo={editTodoMock}/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+
+        await userEvent.clear(todoNameInputField);
+        await userEvent.type(todoNameInputField, "  My updated task   ");
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(editButton);
+        
+        expect(editTodoMock).toHaveBeenCalledTimes(1);
+        expect(editTodoMock).not.toHaveBeenLastCalledWith(expect.objectContaining({taskName: "  My updated task   "}));
+        expect(editTodoMock).toHaveBeenLastCalledWith({taskId: "123", taskName: "My updated task", taskUrgency: 4});
+    });
+
     it("Displays the correct task when multiple tasks exist", () => {
         const taskList: Task[] = [
             {taskId: "123", taskName: "My task", taskUrgency: 4}, 
