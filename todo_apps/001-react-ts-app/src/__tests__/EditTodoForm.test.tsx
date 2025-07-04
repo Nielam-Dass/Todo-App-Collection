@@ -148,6 +148,24 @@ describe("EditTodoForm component tests", () => {
         expect(editTodoMock).toHaveBeenCalledTimes(0);
     });
 
+    it("Displays alert message when submitting form with only whitespace for task name", async () => {
+        render(
+            <EditTodoFormWrapper tasks={[{taskId: "123", taskName: "My task", taskUrgency: 4}]} routeLocation="/edit/123"/>
+        );
+        const todoNameInputField: HTMLElement = screen.getByLabelText("Task Name:");
+        const editButton: HTMLElement = screen.getByRole("button", {name: "Edit"});
+
+        await userEvent.clear(todoNameInputField);
+        await userEvent.type(todoNameInputField, "   ");
+
+        expect(window.alert).toHaveBeenCalledTimes(0);
+
+        await userEvent.click(editButton);
+
+        expect(window.alert).toHaveBeenCalledTimes(1);
+        expect(window.alert).toHaveBeenLastCalledWith("Must provide valid task name and urgency level!");
+    });
+
     it("Displays the correct task when multiple tasks exist", () => {
         const taskList: Task[] = [
             {taskId: "123", taskName: "My task", taskUrgency: 4}, 
