@@ -1,7 +1,6 @@
 import { JSX, ReactNode } from "react";
 import TodoRow from "./TodoRow";
 import Task from "./Task";
-import "./todo-list-styles.css"
 import { useNavigate } from "react-router-dom";
 
 interface TodoTableProps {
