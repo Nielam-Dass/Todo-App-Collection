@@ -29,11 +29,11 @@ function TodoSpecForm({ todoName, todoUrgency, setTodoName, setTodoUrgency }: To
 
     return (
         <>
-        <label htmlFor="todo-name">Task Name: </label>
-        <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input" id="todo-name"/>
+        <label htmlFor="todo-name" className="todo-name-input-label">Task Name: </label>
+        <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input-field" id="todo-name"/>
         <br></br>
-        <label htmlFor="todo-urgency">Task Urgency Level (1-10): </label>
-        <input type="number" onChange={handleTodoUrgencyChange} value={todoUrgency} min="1" max="10" className="todo-urgency-input" id="todo-urgency"/>
+        <label htmlFor="todo-urgency" className="todo-urgency-input-label">Task Urgency Level (1-10): </label>
+        <input type="number" onChange={handleTodoUrgencyChange} value={todoUrgency} min="1" max="10" className="todo-urgency-input-field" id="todo-urgency"/>
         <br></br>
         </>
     )

@@ -13,10 +13,10 @@ function TodoRow(props: TodoRowProps): JSX.Element {
             <td>{props.task.taskName}</td>
             <td>{props.task.taskUrgency}</td>
             <td>
-                <button onClick={props.onEdit}>Edit</button>
+                <button onClick={props.onEdit} className="edit-btn mini-btn">Edit</button>
             </td>
             <td>
-                <button onClick={props.onRemove}>Remove</button>
+                <button onClick={props.onRemove} className="remove-btn mini-btn">Remove</button>
             </td>
         </tr>
     )

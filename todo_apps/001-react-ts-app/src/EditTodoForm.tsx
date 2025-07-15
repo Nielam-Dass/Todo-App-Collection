@@ -48,8 +48,8 @@ function EditTodoForm(props: EditTodoFormProps): JSX.Element {
             <h1>Edit Todo</h1>
             <p>Task ID: {taskId}</p>
             <TodoSpecForm todoName={todoName} todoUrgency={todoUrgency} setTodoName={setTodoName} setTodoUrgency={setTodoUrgency}/>
-            <button onClick={handleEdit}>Edit</button>
-            <button onClick={handleCancel}>Cancel</button>
+            <button onClick={handleEdit} className="edit-btn">Edit</button>
+            <button onClick={handleCancel} className="cancel-btn">Cancel</button>
         </>
     )
 }

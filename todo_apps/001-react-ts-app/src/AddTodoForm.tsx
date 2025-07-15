@@ -31,7 +31,7 @@ function AddTodoForm(props: AddTodoFormProps): JSX.Element {
     return (
         <>
             <TodoSpecForm todoName={todoName} todoUrgency={todoUrgency} setTodoName={setTodoName} setTodoUrgency={setTodoUrgency}/>
-            <button onClick={handleAdd}>Add Todo</button>
+            <button onClick={handleAdd} className="add-btn">Add Todo</button>
         </>
     )
 }
