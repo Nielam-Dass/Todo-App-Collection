@@ -27,5 +27,44 @@ table {
 }
 
 button {
-    margin: 2px;
+    margin-top: 3px;
+    margin-bottom: 8px;
+}
+
+.add-btn, .edit-btn, .remove-btn, .cancel-btn {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+.add-btn {
+    --add-green-color-main: rgb(0, 144, 0);
+    color: var(--add-green-color-main);
+    border: 2px solid var(--add-green-color-main);
+}
+
+.edit-btn {
+    --edit-blue-color-main: rgb(0, 0, 200);
+    color: var(--edit-blue-color-main);
+    border: 2px solid var(--edit-blue-color-main);
+    margin-right: 4px;
+}
+
+.remove-btn {
+    --remove-red-color-main: rgb(200, 0, 0);
+    color: var(--remove-red-color-main);
+    border: 2px solid var(--remove-red-color-main);
+}
+
+.cancel-btn {
+    --cancel-black-color-main: rgb(0, 0, 0);
+    color: var(--cancel-black-color-main);
+    border: 2px solid var(--cancel-black-color-main);
+}
+
+.mini-btn {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    margin: 2px 0px;
 }
