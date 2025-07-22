@@ -1,4 +1,16 @@
+require("dotenv").config();
 const express = require("express");
+const mongoose = require("mongoose");
+const Task = require("./models/Task");
+
+
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log("Connected to database...");
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
 const app = express();
 
