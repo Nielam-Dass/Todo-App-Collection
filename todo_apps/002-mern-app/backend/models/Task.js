@@ -9,6 +9,11 @@ const taskSchema = new mongoose.Schema({
     taskDescription: {
         type: String,
         required: true
+    },
+    taskCompleted: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 
