@@ -1,0 +1,19 @@
+stages:
+  - test
+  - build
+  - deploy
+
+run_tests:
+  stage: test
+  script:
+    - "echo 'testing...'"
+
+vite_build:
+  stage: build
+  script:
+    - "echo 'building...'"
+
+netlify_deploy:
+  stage: deploy
+  script:
+    - "echo 'deploying...'"
