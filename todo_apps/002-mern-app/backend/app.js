@@ -16,4 +16,6 @@ const app = express();
 
 app.use("/", require("./routes/root"));
 
+app.use("/task", require("./routes/task"));
+
 app.listen(3000, () => console.log("Server listening on port 3000..."));
