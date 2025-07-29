@@ -10,3 +10,15 @@ run_tests:
     - "npm install"
   script:
     - "npm run test"
+
+vite_build:
+  stage: build
+  image: node:24-bookworm-slim
+  before_script:
+    - "npm install"
+  script:
+    - "npm run build"
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 6 hours
