@@ -22,3 +22,11 @@ vite_build:
     paths:
       - dist/
     expire_in: 6 hours
+
+netlify_deploy:
+  stage: deploy
+  image: node:24-bookworm-slim
+  before_script:
+    - "npm install --global netlify-cli"
+  script:
+    - "netlify deploy --no-build --prod --dir=dist"
