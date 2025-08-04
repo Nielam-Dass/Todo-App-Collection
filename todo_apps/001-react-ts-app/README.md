@@ -6,6 +6,8 @@ This application allows you to manage a list of tasks stored in browser local st
 - React
 - Vite
 - Docker
+- GitLab CI/CD
+- Netlify
 
 ## Usage
 ### Running the app in dev mode
@@ -19,4 +21,4 @@ This application allows you to manage a list of tasks stored in browser local st
 3. Run `docker run --detach -p80:80 todo-app`
 
 ### Online Access
-This app has been manually deployed to Netlify and can be accessed through this link: https://niels-todo-app.netlify.app/
+This app is continuously deployed to Netlify through [GitLab](https://gitlab.com/Nielam-Dass/react-ts-todo-app) and can be accessed via this link: https://niels-todo-app.netlify.app/
