@@ -7,6 +7,9 @@ function getTaskInfo(req, res) {
 
 async function addTask(req, res) {
     const taskObject = req.body;
+    if(!taskObject.taskName || !taskObject.taskDescription) {
+        return res.status(400).json({message: "Must provide task name and description"})
+    }
     const task = await Task.create(taskObject);
     if(task) {
         res.status(201).json({message: "New task created"});
