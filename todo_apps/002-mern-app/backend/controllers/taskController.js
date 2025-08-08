@@ -1,8 +1,16 @@
+const mongoose = require("mongoose");
 const Task = require("../models/Task");
 
 
-function getTaskInfo(req, res) {
-    res.send(`Task info for id=${req.params.taskId}`);
+async function getTaskInfo(req, res) {
+    if(!mongoose.Types.ObjectId.isValid(req.params.taskId)) {
+        return res.status(404).json({message: "Task not found"});
+    }
+    const task = await Task.findById(req.params.taskId).lean();
+    if(!task) {
+        return res.status(404).json({message: "Task not found"});
+    }
+    res.status(200).json(task);
 }
 
 async function addTask(req, res) {
