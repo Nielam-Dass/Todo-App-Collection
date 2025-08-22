@@ -33,7 +33,7 @@ test("Get individual task by id",  async () => {
     expect(mockResponse.status).toHaveBeenLastCalledWith(200);
 });
 
-test("Get 404 error for nonexistent task", () => {
+test("Get 404 error for invalid task id", async () => {
     taskDoc = {
         _id: new mongoose.Types.ObjectId(),
         taskName: "My task",
@@ -54,7 +54,40 @@ test("Get 404 error for nonexistent task", () => {
     expect(mockResponse.json).toHaveBeenCalledTimes(0);
     expect(mockResponse.status).toHaveBeenCalledTimes(0);
 
-    taskController.getTaskInfo(requestObj, mockResponse);
+    await taskController.getTaskInfo(requestObj, mockResponse);
+
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({message: "Task not found"});
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(404);
+});
+
+test("Get 404 error for nonexistent task", async () => {
+    taskDoc = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false
+    };
+    mockingoose(Task).toReturn((query) => {
+        queryFilter = query.getQuery();
+        return (queryFilter._id===taskDoc._id) ? taskDoc : null;
+    }, "findOne");
+
+    const requestObj = {
+        params: {
+            taskId: new mongoose.Types.ObjectId()
+        }
+    };
+    const mockResponse = { 
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+
+    await taskController.getTaskInfo(requestObj, mockResponse);
 
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
     expect(mockResponse.json).toHaveBeenLastCalledWith({message: "Task not found"});
