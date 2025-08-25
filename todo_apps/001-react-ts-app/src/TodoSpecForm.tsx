@@ -33,7 +33,7 @@ function TodoSpecForm({ todoName, todoUrgency, setTodoName, setTodoUrgency }: To
         <input type="text" onChange={handleTodoNameChange} value={todoName} className="todo-name-input-field" id="todo-name"/>
         <br></br>
         <label htmlFor="todo-urgency" className="todo-urgency-input-label">Task Urgency Level (1-10): </label>
-        <input type="number" onChange={handleTodoUrgencyChange} value={todoUrgency} min="1" max="10" className="todo-urgency-input-field" id="todo-urgency"/>
+        <input type="number" inputMode="numeric" onChange={handleTodoUrgencyChange} value={todoUrgency} min="1" max="10" className="todo-urgency-input-field" id="todo-urgency"/>
         <br></br>
         </>
     )
