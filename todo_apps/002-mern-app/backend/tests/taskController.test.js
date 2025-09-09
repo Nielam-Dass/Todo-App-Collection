@@ -121,3 +121,29 @@ test("Add new task successfully", async () => {
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
     expect(mockResponse.json).toHaveBeenLastCalledWith({message: "New task created"});
 });
+
+test("Fail to add task with incomplete request body", async () => {
+    const newTask = {
+        taskName: "My new task",
+        // Missing taskDescription
+    };
+
+    requestObj = {
+        body: newTask
+    };
+    
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+
+    await taskController.addTask(requestObj, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(400);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({message: "Must provide task name and description"});
+});
