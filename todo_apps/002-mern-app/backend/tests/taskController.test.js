@@ -110,8 +110,11 @@ test("Add new task successfully", async () => {
         status: jest.fn().mockReturnThis()
     };
 
+    const taskSchemaSpy = jest.spyOn(Task, "create");
+
     expect(mockResponse.status).toHaveBeenCalledTimes(0);
     expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskSchemaSpy).toHaveBeenCalledTimes(0);
 
     await taskController.addTask(requestObj, mockResponse);
     // Mockingoose has a default behavior for Task.create(), so a document object is returned without explicit mocking
@@ -120,6 +123,8 @@ test("Add new task successfully", async () => {
     expect(mockResponse.status).toHaveBeenLastCalledWith(201);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
     expect(mockResponse.json).toHaveBeenLastCalledWith({message: "New task created"});
+    expect(taskSchemaSpy).toHaveBeenCalledTimes(1);
+    expect(taskSchemaSpy).toHaveBeenLastCalledWith(newTask);
 });
 
 test("Fail to add task with incomplete request body", async () => {
