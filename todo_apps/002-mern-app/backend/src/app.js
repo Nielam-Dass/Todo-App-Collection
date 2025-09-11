@@ -1,17 +1,7 @@
-require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
-const Task = require("./models/Task");
+const { configureMongoose } = require("./config/mongooseConfig");
 
-
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => {
-        console.log("Connected to database...");
-    })
-    .catch((err) => {
-        console.log(err);
-    });
-
+configureMongoose();
 const app = express();
 
 app.use(express.json());  // Parses JSON payloads to populate request body with data
