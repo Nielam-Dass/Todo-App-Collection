@@ -9,7 +9,7 @@
   "description": "Backend for MERN todo app",
   "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon src/app.js",
+    "dev": "nodemon src/index.js",
     "test": "jest"
   },
   "author": "",
@@ -17,6 +17,8 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "jest": "^30.0.5",
-    "mockingoose": "^2.16.2"
+    "mockingoose": "^2.16.2",
+    "mongodb-memory-server": "^10.2.0",
+    "supertest": "^7.1.4"
   }
 }
