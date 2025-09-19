@@ -3,6 +3,10 @@ const mockingoose = require("mockingoose");
 const Task = require("../src/models/Task");
 
 
+afterEach(() => {
+    mockingoose.resetAll();  // Moved mockingoose.resetAll() to this test file to avoid interference with app integration tests
+});
+
 test("Get array of all tasks", async () => {
     const taskList = [
         {

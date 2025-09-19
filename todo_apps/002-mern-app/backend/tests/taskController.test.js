@@ -4,6 +4,10 @@ const Task = require("../src/models/Task");
 const mongoose = require("mongoose");
 
 
+afterEach(() => {
+    mockingoose.resetAll();  // Moved mockingoose.resetAll() to this test file to avoid interference with app integration tests
+});
+
 test("Get individual task by id",  async () => {
     taskDoc = {
         _id: new mongoose.Types.ObjectId(),
