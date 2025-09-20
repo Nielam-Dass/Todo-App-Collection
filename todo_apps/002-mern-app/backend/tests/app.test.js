@@ -19,7 +19,7 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
-test("Get 200 OK status at root page", async () => {
+test("Get 200 OK status and empty list at root page", async () => {
     const response = await request(app).get("/");
     expect(response.status).toBe(200);
     expect(response.type).toBe("application/json");
