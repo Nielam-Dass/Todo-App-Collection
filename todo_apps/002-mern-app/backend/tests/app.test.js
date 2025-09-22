@@ -32,3 +32,22 @@ test("Get 404 error when sending GET request to task route", async () => {
     expect(response.type).toBe("application/json");
     expect(response.body).toEqual({ message: "404 Not Found" });  // toEqual() checks for deep equality of objects, unlike toBe()
 });
+
+test("Successfully add task by sending POST request to task route", async () => {
+    const newTask = {
+        taskName: "My new task",
+        taskDescription: "My new task description"
+    };
+
+    let response = await request(app).get("/");
+    expect(response.body).toHaveLength(0);
+    
+    response = await request(app).post("/task").send(newTask);
+    expect(response.status).toBe(201);
+    expect(response.type).toBe("application/json");
+    expect(response.body).toEqual({ message: "New task created" });
+    
+    response = await request(app).get("/");
+    expect(response.body).toHaveLength(1);
+    expect(response.body).toEqual([expect.objectContaining(newTask)]);
+});
