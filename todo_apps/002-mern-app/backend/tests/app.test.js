@@ -19,6 +19,13 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
+afterEach(async () => {
+    const collections = mongoose.connection.collections;
+    for(const key in collections){
+        await collections[key].deleteMany();
+    }
+});
+
 test("Get 200 OK status and empty list at root page", async () => {
     const response = await request(app).get("/");
     expect(response.status).toBe(200);
@@ -50,4 +57,9 @@ test("Successfully add task by sending POST request to task route", async () => 
     response = await request(app).get("/");
     expect(response.body).toHaveLength(1);
     expect(response.body).toEqual([expect.objectContaining(newTask)]);
+});
+
+test("Temporary test", async () => {
+    let response = await request(app).get("/");
+    expect(response.body).toHaveLength(0);  // Should not be affected by previous tests
 });
