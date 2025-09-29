@@ -57,6 +57,7 @@ test("Successfully add task by sending POST request to task route", async () => 
     response = await request(app).get("/");
     expect(response.body).toHaveLength(1);
     expect(response.body).toEqual([expect.objectContaining(newTask)]);
+    expect(response.body[0].taskCompleted).toBe(false);  // taskCompleted property should be false by default
 });
 
 test("Successfully add multiple tasks", async () => {
