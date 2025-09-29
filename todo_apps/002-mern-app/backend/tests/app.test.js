@@ -59,6 +59,38 @@ test("Successfully add task by sending POST request to task route", async () => 
     expect(response.body).toEqual([expect.objectContaining(newTask)]);
 });
 
+test("Successfully add multiple tasks", async () => {
+    const firstTask = {
+        taskName: "My first task",
+        taskDescription: "My first task description"
+    };
+
+    const secondTask = {
+        taskName: "My second task",
+        taskDescription: "My second task description",
+        taskCompleted: true
+    };
+
+    let response = await request(app).get("/");
+    expect(response.body).toHaveLength(0);
+
+    response = await request(app).post("/task").send(firstTask);
+    expect(response.status).toBe(201);
+
+    response = await request(app).get("/");
+    expect(response.body).toHaveLength(1);
+    expect(response.body).toContainEqual(expect.objectContaining(firstTask));
+    expect(response.body).not.toContainEqual(expect.objectContaining(secondTask));
+
+    response = await request(app).post("/task").send(secondTask);
+    expect(response.status).toBe(201);
+
+    response = await request(app).get("/");
+    expect(response.body).toHaveLength(2);
+    expect(response.body).toContainEqual(expect.objectContaining(firstTask));
+    expect(response.body).toContainEqual(expect.objectContaining(secondTask));
+});
+
 test("Fail to add task when sending POST request to task route with missing fields", async () => {
     const newTask = {
         taskName: "My new task",
