@@ -109,3 +109,23 @@ test("Fail to add task when sending POST request to task route with missing fiel
     response = await request(app).get("/");
     expect(response.body).toHaveLength(0);
 });
+
+test("Successfully getting data for one task", async () => {
+    const newTask = {
+        taskName: "My new task",
+        taskDescription: "My new task description"
+    };
+
+    let response = await request(app).get("/");
+    expect(response.body).toHaveLength(0);
+    response = await request(app).post("/task").send(newTask);
+    expect(response.status).toBe(201);
+    response = await request(app).get("/");
+    expect(response.body).toHaveLength(1);
+    
+    const newTaskId = response.body[0]._id;
+    response = await request(app).get(`/task/${newTaskId}`);
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(expect.objectContaining(newTask));
+    expect(response.body._id).toBe(newTaskId);
+});
