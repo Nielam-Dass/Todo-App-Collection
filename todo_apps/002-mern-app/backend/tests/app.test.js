@@ -129,3 +129,23 @@ test("Successfully getting data for one task", async () => {
     expect(response.body).toEqual(expect.objectContaining(newTask));
     expect(response.body._id).toBe(newTaskId);
 });
+
+test("Get 404 error when attempting to get data a nonexistent task", async () => {
+    const newTask = {
+        taskName: "My new task",
+        taskDescription: "My new task description"
+    };
+    let response = await request(app).post("/task").send(newTask);
+    expect(response.status).toBe(201);
+    response = await request(app).get("/");
+    expect(response.body).toHaveLength(1);
+    // Ensure existing task can still be accessed
+    const newTaskId = response.body[0]._id;
+    response = await request(app).get(`/task/${newTaskId}`);
+    expect(response.status).toBe(200);
+    // Generate new nonexistent task id and attempt to access the task route
+    const nonexistentTaskId = new mongoose.Types.ObjectId();
+    response = await request(app).get(`/task/${nonexistentTaskId}`);
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({ message: "Task not found" });
+});
