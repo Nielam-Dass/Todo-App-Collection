@@ -105,7 +105,7 @@ test("Add new task successfully", async () => {
         taskDescription: "My new task description"
     };
 
-    requestObj = {
+    const requestObj = {
         body: newTask
     };
     
@@ -137,7 +137,7 @@ test("Fail to add task with incomplete request body", async () => {
         // Missing taskDescription
     };
 
-    requestObj = {
+    const requestObj = {
         body: newTask
     };
     
@@ -159,4 +159,108 @@ test("Fail to add task with incomplete request body", async () => {
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
     expect(mockResponse.json).toHaveBeenLastCalledWith({message: "Must provide task name and description"});
     expect(taskSchemaSpy).toHaveBeenCalledTimes(0);
+});
+
+test("Successfully update task name", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false,
+    };
+    let taskDoc = {
+        ...originalTask,
+        save: jest.fn()  // save() method in document object can be used to update the task
+    };
+    const updatedTask = {
+        ...originalTask,
+        taskName: "My updated task name"
+    };
+    mockingoose(Task).toReturn((query) => {
+        queryFilter = query.getQuery();
+        return (queryFilter._id===taskDoc._id) ? taskDoc : null;
+    }, "findOne");
+
+    const requestObj = {
+        params: {
+            taskId: originalTask._id
+        },
+        body: updatedTask
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.taskName).toBe("My task");
+    expect(taskDoc.taskDescription).toBe("My task description");
+    expect(taskDoc.taskCompleted).toBe(false);
+    expect(taskDoc.save).toHaveBeenCalledTimes(0);
+
+    await taskController.updateTask(requestObj, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(200);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been updated` })
+    expect(taskDoc.taskName).toBe("My updated task name");
+    expect(taskDoc.taskDescription).toBe("My task description");
+    expect(taskDoc.taskCompleted).toBe(false);
+    expect(taskDoc._id).toBe(originalTask._id);
+    expect(taskDoc.save).toHaveBeenCalledTimes(1);
+});
+
+test("Successfully update multiple task fields", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false,
+    };
+    let taskDoc = {
+        ...originalTask,
+        save: jest.fn()  // save() method in document object can be used to update the task
+    };
+    const updatedTask = {
+        ...originalTask,
+        taskName: "My updated task name",
+        taskDescription: "My updated task description",
+        taskCompleted: true
+    };
+    mockingoose(Task).toReturn((query) => {
+        queryFilter = query.getQuery();
+        return (queryFilter._id===taskDoc._id) ? taskDoc : null;
+    }, "findOne");
+
+    const requestObj = {
+        params: {
+            taskId: originalTask._id
+        },
+        body: updatedTask
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.taskName).toBe("My task");
+    expect(taskDoc.taskDescription).toBe("My task description");
+    expect(taskDoc.taskCompleted).toBe(false);
+    expect(taskDoc.save).toHaveBeenCalledTimes(0);
+
+    await taskController.updateTask(requestObj, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(200);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been updated` })
+    expect(taskDoc.taskName).toBe("My updated task name");
+    expect(taskDoc.taskDescription).toBe("My updated task description");
+    expect(taskDoc.taskCompleted).toBe(true);
+    expect(taskDoc._id).toBe(originalTask._id);
+    expect(taskDoc.save).toHaveBeenCalledTimes(1);
 });

@@ -27,7 +27,7 @@ async function addTask(req, res) {
     }
 }
 
-function updateTask(req, res) {
+async function updateTask(req, res) {
     res.send(`Task id=${req.params.taskId} updated`);
 }
 
