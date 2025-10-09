@@ -168,7 +168,7 @@ test("Successfully update task name", async () => {
         taskDescription: "My task description",
         taskCompleted: false,
     };
-    let taskDoc = {
+    const taskDoc = {
         ...originalTask,
         save: jest.fn()  // save() method in document object can be used to update the task
     };
@@ -176,10 +176,8 @@ test("Successfully update task name", async () => {
         ...originalTask,
         taskName: "My updated task name"
     };
-    mockingoose(Task).toReturn((query) => {
-        queryFilter = query.getQuery();
-        return (queryFilter._id===taskDoc._id) ? taskDoc : null;
-    }, "findOne");
+    // Mockingoose findOne mock does NOT return an identical reference to the taskDoc object, so jest.spyOn() is more suitable here
+    jest.spyOn(Task, "findById").mockResolvedValue(taskDoc);
 
     const requestObj = {
         params: {
@@ -219,7 +217,7 @@ test("Successfully update multiple task fields", async () => {
         taskDescription: "My task description",
         taskCompleted: false,
     };
-    let taskDoc = {
+    const taskDoc = {
         ...originalTask,
         save: jest.fn()  // save() method in document object can be used to update the task
     };
@@ -229,10 +227,8 @@ test("Successfully update multiple task fields", async () => {
         taskDescription: "My updated task description",
         taskCompleted: true
     };
-    mockingoose(Task).toReturn((query) => {
-        queryFilter = query.getQuery();
-        return (queryFilter._id===taskDoc._id) ? taskDoc : null;
-    }, "findOne");
+    // Mockingoose findOne mock does NOT return an identical reference to the taskDoc object, so jest.spyOn() is more suitable here
+    jest.spyOn(Task, "findById").mockResolvedValue(taskDoc);
 
     const requestObj = {
         params: {

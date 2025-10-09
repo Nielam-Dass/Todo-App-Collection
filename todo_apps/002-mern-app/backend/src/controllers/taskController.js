@@ -28,7 +28,14 @@ async function addTask(req, res) {
 }
 
 async function updateTask(req, res) {
-    res.send(`Task id=${req.params.taskId} updated`);
+    const taskId = req.params.taskId;
+    const { taskName, taskDescription, taskCompleted } = req.body;
+    const task = await Task.findById(taskId);
+    task.taskName = taskName;
+    task.taskDescription = taskDescription;
+    task.taskCompleted = taskCompleted;
+    await task.save();
+    res.status(200).json({ message: `Task ${taskId} has been updated` })
 }
 
 function deleteTask(req, res) {
