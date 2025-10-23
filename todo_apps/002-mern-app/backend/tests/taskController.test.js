@@ -253,10 +253,60 @@ test("Successfully update multiple task fields", async () => {
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenLastCalledWith(200);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been updated` })
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been updated` });
     expect(taskDoc.taskName).toBe("My updated task name");
     expect(taskDoc.taskDescription).toBe("My updated task description");
     expect(taskDoc.taskCompleted).toBe(true);
     expect(taskDoc._id).toBe(originalTask._id);
     expect(taskDoc.save).toHaveBeenCalledTimes(1);
+});
+
+test("Fail to update task with missing fields", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false
+    };
+    const taskDoc = {
+        ...originalTask,
+        save: jest.fn()  // save() method in document object can be used to update the task
+    };
+    const updatedTask = {
+        _id: originalTask._id,
+        taskName: "My updated task name",
+        // Missing fields taskDescription and taskCompleted
+    };
+    
+    jest.spyOn(Task, "findById").mockResolvedValue(taskDoc);
+
+    const requestObj = {
+        params: {
+            taskId: originalTask._id
+        },
+        body: updatedTask
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.taskName).toBe("My task");
+    expect(taskDoc.taskDescription).toBe("My task description");
+    expect(taskDoc.taskCompleted).toBe(false);
+    expect(taskDoc.save).toHaveBeenCalledTimes(0);
+
+    await taskController.updateTask(requestObj, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(400);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: "All fields are required to update a task" });
+    expect(taskDoc.taskName).toBe("My task");
+    expect(taskDoc.taskDescription).toBe("My task description");
+    expect(taskDoc.taskCompleted).toBe(false);
+    expect(taskDoc._id).toBe(originalTask._id);
+    expect(taskDoc.save).toHaveBeenCalledTimes(0);
 });
