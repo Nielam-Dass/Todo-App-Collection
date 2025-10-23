@@ -30,6 +30,11 @@ async function addTask(req, res) {
 async function updateTask(req, res) {
     const taskId = req.params.taskId;
     const { taskName, taskDescription, taskCompleted } = req.body;
+    
+    if(taskName===undefined || taskDescription===undefined || taskCompleted===undefined) {
+        res.status(400).json({ message: "All fields are required to update a task" });
+        return;
+    }
     const task = await Task.findById(taskId);
     task.taskName = taskName;
     task.taskDescription = taskDescription;
