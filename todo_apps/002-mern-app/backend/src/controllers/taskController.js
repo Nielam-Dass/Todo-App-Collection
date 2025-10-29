@@ -31,8 +31,12 @@ async function updateTask(req, res) {
     const taskId = req.params.taskId;
     const { taskName, taskDescription, taskCompleted } = req.body;
     
-    if(taskName===undefined || taskDescription===undefined || taskCompleted===undefined) {
+    if(taskName===undefined || taskDescription===undefined || taskCompleted===undefined || req.body._id===undefined) {
         res.status(400).json({ message: "All fields are required to update a task" });
+        return;
+    }
+    if(req.body._id !== taskId) {
+        res.status(400).json({ message: "Task id cannot be changed" });
         return;
     }
     const task = await Task.findById(taskId);
@@ -44,7 +48,7 @@ async function updateTask(req, res) {
     task.taskDescription = taskDescription;
     task.taskCompleted = taskCompleted;
     await task.save();
-    res.status(200).json({ message: `Task ${taskId} has been updated` })
+    res.status(200).json({ message: `Task ${taskId} has been updated` });
 }
 
 function deleteTask(req, res) {

@@ -342,3 +342,54 @@ test("Fail to update nonexistent task", async () => {
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
     expect(mockResponse.json).toHaveBeenLastCalledWith({ message: "Task not found" });
 });
+
+test("Fail to update task when id in request body and request url do not match", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false
+    };
+    const taskDoc = {
+        ...originalTask,
+        save: jest.fn()  // save() method in document object can be used to update the task
+    };
+    const updatedTask = {
+        ...originalTask,
+        _id: new mongoose.Types.ObjectId(),  // Changing the task id should cause an error
+        taskName: "My updated task name",
+    };
+    
+    const findByIdSpy = jest.spyOn(Task, "findById").mockResolvedValue(taskDoc);
+
+    const requestObj = {
+        params: {
+            taskId: originalTask._id
+        },
+        body: updatedTask
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.taskName).toBe("My task");
+    expect(taskDoc.taskDescription).toBe("My task description");
+    expect(taskDoc.taskCompleted).toBe(false);
+    expect(taskDoc.save).toHaveBeenCalledTimes(0);
+
+    await taskController.updateTask(requestObj, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(400);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: "Task id cannot be changed" });
+    expect(taskDoc.taskName).toBe("My task");
+    expect(taskDoc.taskDescription).toBe("My task description");
+    expect(taskDoc.taskCompleted).toBe(false);
+    expect(taskDoc._id).toBe(originalTask._id);
+    expect(taskDoc.save).toHaveBeenCalledTimes(0);
+    expect(findByIdSpy).not.toHaveBeenCalled()
+});
