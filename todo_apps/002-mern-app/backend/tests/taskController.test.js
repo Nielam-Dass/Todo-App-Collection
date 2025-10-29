@@ -310,3 +310,35 @@ test("Fail to update task with missing fields", async () => {
     expect(taskDoc._id).toBe(originalTask._id);
     expect(taskDoc.save).toHaveBeenCalledTimes(0);
 });
+
+test("Fail to update nonexistent task", async () => {
+    const updatedTask = {
+        _id: new mongoose.Types.ObjectId(),  // Nonexistent task id
+        taskName: "My updated task name",
+        taskDescription: "My updated task description",
+        taskCompleted: true
+    };
+    // findById returns null when no matching document is found
+    jest.spyOn(Task, "findById").mockResolvedValue(null);
+
+    const requestObj = {
+        params: {
+            taskId: updatedTask._id
+        },
+        body: updatedTask
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+
+    await taskController.updateTask(requestObj, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(404);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: "Task not found" });
+});

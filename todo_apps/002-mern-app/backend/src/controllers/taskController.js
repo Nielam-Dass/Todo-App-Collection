@@ -36,6 +36,10 @@ async function updateTask(req, res) {
         return;
     }
     const task = await Task.findById(taskId);
+    if(!task) {
+        res.status(404).json({ message: "Task not found" });
+        return;
+    }
     task.taskName = taskName;
     task.taskDescription = taskDescription;
     task.taskCompleted = taskCompleted;
