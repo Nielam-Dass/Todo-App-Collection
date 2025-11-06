@@ -202,7 +202,7 @@ test("Successfully update task name", async () => {
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenLastCalledWith(200);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
-    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been updated` })
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been updated` });
     expect(taskDoc.taskName).toBe("My updated task name");
     expect(taskDoc.taskDescription).toBe("My task description");
     expect(taskDoc.taskCompleted).toBe(false);
@@ -392,4 +392,42 @@ test("Fail to update task when id in request body and request url do not match",
     expect(taskDoc._id).toBe(originalTask._id);
     expect(taskDoc.save).toHaveBeenCalledTimes(0);
     expect(findByIdSpy).not.toHaveBeenCalled()
+});
+
+test("Successfully delete a task", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false,
+    };
+    const taskDoc = {
+        ...originalTask,
+        deleteOne: jest.fn()  // deleteOne() method in document object can be used to delete the task
+    };
+    
+    jest.spyOn(Task, "findById").mockResolvedValue(taskDoc);
+
+    const requestObj = {
+        params: {
+            taskId: originalTask._id
+        },
+        body: { id: originalTask._id }
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
+
+    await taskController.deleteTask(requestObj, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(200);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been deleted` });
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(1);
 });

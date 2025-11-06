@@ -51,7 +51,7 @@ async function updateTask(req, res) {
     res.status(200).json({ message: `Task ${taskId} has been updated` });
 }
 
-function deleteTask(req, res) {
+async function deleteTask(req, res) {
     res.send(`Task id=${req.params.taskId} deleted`);
 }
 
