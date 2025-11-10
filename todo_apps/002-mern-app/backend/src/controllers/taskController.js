@@ -52,7 +52,10 @@ async function updateTask(req, res) {
 }
 
 async function deleteTask(req, res) {
-    res.send(`Task id=${req.params.taskId} deleted`);
+    const { id } = req.body;
+    const task = await Task.findById(id);
+    await task.deleteOne();
+    res.status(200).json({ message: `Task ${id} has been deleted` });
 }
 
 module.exports = { getTaskInfo, addTask, updateTask, deleteTask };
