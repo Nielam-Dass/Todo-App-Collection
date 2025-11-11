@@ -53,6 +53,10 @@ async function updateTask(req, res) {
 
 async function deleteTask(req, res) {
     const { id } = req.body;
+    if(id===undefined) {
+        res.status(400).json({ message: "Id field is required in to delete a task" });
+        return;
+    }
     const task = await Task.findById(id);
     await task.deleteOne();
     res.status(200).json({ message: `Task ${id} has been deleted` });
