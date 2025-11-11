@@ -431,3 +431,42 @@ test("Successfully delete a task", async () => {
     expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Task ${taskDoc._id} has been deleted` });
     expect(taskDoc.deleteOne).toHaveBeenCalledTimes(1);
 });
+
+test("Fail to delete task when id is missing from request body", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false,
+    };
+    const taskDoc = {
+        ...originalTask,
+        deleteOne: jest.fn()  // deleteOne() method in document object can be used to delete the task
+    };
+    const taskSchemaSpy = jest.spyOn(Task, "findById").mockResolvedValue(taskDoc);
+
+    const requestObj = {
+        params: {
+            taskId: originalTask._id
+        },
+        body: {}  // Empty body missing id field
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(taskSchemaSpy).not.toHaveBeenCalled();
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
+
+    await taskController.deleteTask(requestObj, mockResponse);
+    
+    expect(taskSchemaSpy).not.toHaveBeenCalled();
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(400);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: "Id field is required in to delete a task" });
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
+});
