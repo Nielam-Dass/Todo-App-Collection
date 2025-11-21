@@ -57,6 +57,10 @@ async function deleteTask(req, res) {
         res.status(400).json({ message: "Id field is required in to delete a task" });
         return;
     }
+    if(id!==req.params.taskId) {
+        res.status(400).json({ message: `Cannot delete task with id ${id} at current endpoint` });
+        return;
+    }
     const task = await Task.findById(id);
     await task.deleteOne();
     res.status(200).json({ message: `Task ${id} has been deleted` });
