@@ -61,7 +61,12 @@ async function deleteTask(req, res) {
         res.status(400).json({ message: `Cannot delete task with id ${id} at current endpoint` });
         return;
     }
-    const task = await Task.findById(id);
+    const task = await Task.findById(req.params.taskId);
+    if(!task) {
+        res.status(404).json({ message: "Task not found" });
+        return;
+    }
+    
     await task.deleteOne();
     res.status(200).json({ message: `Task ${id} has been deleted` });
 }
