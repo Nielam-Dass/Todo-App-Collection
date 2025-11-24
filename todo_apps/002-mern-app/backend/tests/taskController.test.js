@@ -509,3 +509,41 @@ test("Fail to delete task when id in request body does not match with id in url"
     expect(mockResponse.json).toHaveBeenLastCalledWith({ message: `Cannot delete task with id ${requestObj.body.id} at current endpoint` });
     expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
 });
+
+test("Fail to delete nonexistent task", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),  // Nonexistent task id
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false,
+    };
+    const taskDoc = {
+        ...originalTask,
+        deleteOne: jest.fn()
+    };
+    // findById returns null when no matching document is found
+    jest.spyOn(Task, "findById").mockResolvedValue(null);
+
+    const requestObj = {
+        params: {
+            taskId: originalTask._id 
+        },
+        body: { id: originalTask._id }
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
+
+    await taskController.deleteTask(requestObj, mockResponse);
+    
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(404);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: "Task not found" });
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
+});
