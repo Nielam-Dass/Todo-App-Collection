@@ -52,23 +52,23 @@ async function updateTask(req, res) {
 }
 
 async function deleteTask(req, res) {
-    const { id } = req.body;
-    if(id===undefined) {
-        res.status(400).json({ message: "Id field is required in to delete a task" });
-        return;
-    }
-    if(id!==req.params.taskId) {
-        res.status(400).json({ message: `Cannot delete task with id ${id} at current endpoint` });
-        return;
-    }
-    const task = await Task.findById(req.params.taskId);
+    const taskId = req.params.taskId;
+    const task = await Task.findById(taskId);
     if(!task) {
         res.status(404).json({ message: "Task not found" });
         return;
     }
+    if(req.body.id===undefined) {
+        res.status(400).json({ message: "Id field is required in to delete a task" });
+        return;
+    }
+    if(taskId!==req.body.id) {
+        res.status(400).json({ message: `Cannot delete task with id ${req.body.id} at current endpoint` });
+        return;
+    }
     
     await task.deleteOne();
-    res.status(200).json({ message: `Task ${id} has been deleted` });
+    res.status(200).json({ message: `Task ${taskId} has been deleted` });
 }
 
 module.exports = { getTaskInfo, addTask, updateTask, deleteTask };

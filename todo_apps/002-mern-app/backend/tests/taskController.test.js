@@ -463,7 +463,7 @@ test("Fail to delete task when id is missing from request body", async () => {
 
     await taskController.deleteTask(requestObj, mockResponse);
     
-    expect(taskSchemaSpy).not.toHaveBeenCalled();
+    expect(taskSchemaSpy).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenLastCalledWith(400);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
@@ -502,7 +502,7 @@ test("Fail to delete task when id in request body does not match with id in url"
 
     await taskController.deleteTask(requestObj, mockResponse);
     
-    expect(taskSchemaSpy).not.toHaveBeenCalled();
+    expect(taskSchemaSpy).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenLastCalledWith(400);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
@@ -541,6 +541,45 @@ test("Fail to delete nonexistent task", async () => {
 
     await taskController.deleteTask(requestObj, mockResponse);
     
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenLastCalledWith(404);
+    expect(mockResponse.json).toHaveBeenCalledTimes(1);
+    expect(mockResponse.json).toHaveBeenLastCalledWith({ message: "Task not found" });
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
+});
+
+test("Return 404 error when deleting task at nonexistent endpoint even with valid id in body", async () => {
+    const originalTask = {
+        _id: new mongoose.Types.ObjectId(),
+        taskName: "My task",
+        taskDescription: "My task description",
+        taskCompleted: false,
+    };
+    const taskDoc = {
+        ...originalTask,
+        deleteOne: jest.fn()
+    };
+    const taskSchemaSpy = jest.spyOn(Task, "findById").mockResolvedValue(null);
+
+    const requestObj = {
+        params: {
+            taskId: new mongoose.Types.ObjectId() 
+        },
+        body: { id: originalTask._id }  // Id in body is valid, but does not match with url params
+    };
+    const mockResponse = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis()
+    };
+
+    expect(taskSchemaSpy).not.toHaveBeenCalled();
+    expect(mockResponse.status).toHaveBeenCalledTimes(0);
+    expect(mockResponse.json).toHaveBeenCalledTimes(0);
+    expect(taskDoc.deleteOne).toHaveBeenCalledTimes(0);
+
+    await taskController.deleteTask(requestObj, mockResponse);
+    
+    expect(taskSchemaSpy).toHaveBeenCalledTimes(1)
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenLastCalledWith(404);
     expect(mockResponse.json).toHaveBeenCalledTimes(1);
