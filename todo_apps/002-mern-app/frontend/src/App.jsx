@@ -1,7 +1,13 @@
+import { Route, Routes } from "react-router-dom";
+
+
 function App() {
   return (
     <>
-      <h1>MERN TODO APP FRONTEND!</h1>
+      <Routes>
+        <Route path="/" element={<h1>TODO ROOT ROUTE</h1>}/>
+        <Route path="/task/:taskId" element={<h1>TODO TASK ROUTE</h1>}/>
+      </Routes>
     </>
   );
 }
