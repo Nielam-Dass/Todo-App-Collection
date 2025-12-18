@@ -1,7 +1,7 @@
-function Home () {
+function HomePage () {
   return (
     <div>Home - TODO Root Route</div>
   );
 }
 
-export default Home;
+export default HomePage;

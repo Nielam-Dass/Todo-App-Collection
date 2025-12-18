@@ -1,7 +1,7 @@
-function Task () {
+function TaskPage () {
   return (
     <div>Task - TODO Task Route</div>
   );
 }
 
-export default Task;
+export default TaskPage;
