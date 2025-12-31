@@ -7,11 +7,19 @@ function HomePage () {
     queryKey: ["tasks"],
     queryFn: fetchAllTasks
   });
-  console.log(query.data);
-  
-  return (
-    <div>Home - TODO Root Route</div>
-  );
+
+  if(query.data) {
+    return (
+      <>
+      {query.data.map((task) => <div key={task._id}>{task.taskName}</div>)}
+      </>
+    )
+  }
+  else {
+    return (
+      <div>Home - TODO Root Route</div>
+    );
+  }
 }
 
 export default HomePage;
