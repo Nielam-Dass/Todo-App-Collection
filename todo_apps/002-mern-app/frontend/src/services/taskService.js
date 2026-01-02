@@ -1,5 +1,13 @@
+// Delay utility function to simulate latency (will remove later)
+const delay = (delayTime) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, delayTime);
+    });
+}
+
 // TODO: Query backend to fetch all tasks
 export const fetchAllTasks = async () => {
+    await delay(2000);
     return [
         {
             _id: "1",

@@ -8,18 +8,17 @@ function HomePage () {
     queryFn: fetchAllTasks
   });
 
-  if(query.data) {
+  if(query.isLoading) {
     return (
-      <>
-      {query.data.map((task) => <div key={task._id}>{task.taskName}</div>)}
-      </>
-    )
-  }
-  else {
-    return (
-      <div>Home - TODO Root Route</div>
+      <div>Loading Tasks...</div>
     );
   }
+
+  return (
+    <>
+    {query.data.map((task) => <div key={task._id}>{task.taskName}</div>)}
+    </>
+  );
 }
 
 export default HomePage;
