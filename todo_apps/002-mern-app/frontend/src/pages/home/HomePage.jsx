@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllTasks } from "../../services/taskService";
+import TaskList from "./TaskList";
 
 
 function HomePage () {
@@ -16,7 +17,7 @@ function HomePage () {
 
   return (
     <>
-    {query.data.map((task) => <div key={task._id}>{task.taskName}</div>)}
+      <TaskList taskList={query.data}/>
     </>
   );
 }
