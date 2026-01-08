@@ -1,6 +1,6 @@
 function TaskCard(props) {
   return (
-    <h1 style={{border: "1px solid black"}}>{props.task.taskName}</h1>
+    <div style={{border: "1px solid black", borderRadius: "10px", padding: "20px 40px", fontSize: "2rem"}}>{props.task.taskName}</div>
   );
 }
 
