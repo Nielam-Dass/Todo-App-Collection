@@ -1,6 +1,11 @@
 import TaskCard from "./TaskCard";
 
 function TaskList(props) {
+  if(props.tasksLoading) {
+    return (
+      <div style={{display: "flex", justifyContent: "center", fontSize: "1.5rem"}}>Task Loading...</div>
+    )
+  }
   return (
     <>
     <div style={{

@@ -9,15 +9,10 @@ function HomePage () {
     queryFn: fetchAllTasks
   });
 
-  if(query.isLoading) {
-    return (
-      <div>Loading Tasks...</div>
-    );
-  }
-
   return (
     <>
-      <TaskList taskList={query.data}/>
+      <h1 style={{display: "flex", justifyContent: "center", fontSize: "3.5rem"}}>Todo App</h1>
+      <TaskList tasksLoading={query.isLoading} taskList={query.data}/>
     </>
   );
 }
