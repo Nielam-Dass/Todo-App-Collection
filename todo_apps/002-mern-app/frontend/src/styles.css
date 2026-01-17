@@ -1,3 +1,33 @@
 body {
     font-family: Arial;
 }
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px 80px;
+}
+
+.task-card {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px 40px;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.task-card>.completion-checkbox {
+    width: 2rem;
+    height: 2rem;
+}
+
+.task-card>span {
+    flex-grow: 1;
+}
+
+.task-card>button {
+    padding: 4px;
+}

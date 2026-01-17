@@ -10,12 +10,12 @@ function TaskCard(props) {
   }
   
   return (
-    <div style={{border: "1px solid black", borderRadius: "10px", padding: "20px 40px", fontSize: "2rem", display: "flex", alignItems: "center", gap: "8px"}}
+    <div className="task-card"
       onClick={()=>handleTaskClick(props.task._id)}
     >
-      <input type="checkbox" onClick={(e)=>e.stopPropagation()} style={{width: "2rem", height: "2rem"}}/>
-      <span style={{flexGrow: 1}}>{props.task.taskName}</span>
-      <button style={{padding: "4px"}} onClick={(e)=>e.stopPropagation()}>
+      <input type="checkbox" onClick={(e)=>e.stopPropagation()} className="completion-checkbox"/>
+      <span>{props.task.taskName}</span>
+      <button onClick={(e)=>e.stopPropagation()}>
         <img src={trashCanIcon} width={"28px"} height={"28px"}/>
       </button>
     </div>

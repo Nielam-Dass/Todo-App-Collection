@@ -8,12 +8,7 @@ function TaskList(props) {
   }
   return (
     <>
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "15px",
-      padding: "10px 80px"
-    }}>
+    <div className="task-list">
       {props.taskList.map((task) => <TaskCard task={task} key={task._id}/>)}
     </div>
     </>
