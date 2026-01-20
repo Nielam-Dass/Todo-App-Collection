@@ -5,18 +5,22 @@ body {
 .task-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     padding: 10px 80px;
 }
 
 .task-card {
-    border: 1px solid black;
+    outline: 1px solid black;
     border-radius: 10px;
     padding: 20px 40px;
     font-size: 32px;
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.task-card:hover {
+    outline: 4px solid black;
 }
 
 .task-card>.completion-checkbox {
