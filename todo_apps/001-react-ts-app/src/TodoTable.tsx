@@ -28,7 +28,7 @@ function TodoTable(props: TodoTableProps): JSX.Element {
     }
     return (
         <>
-        <table>
+        <table className="main-todo-table">
             <thead>
                 <tr>
                     <th>Task Name</th>

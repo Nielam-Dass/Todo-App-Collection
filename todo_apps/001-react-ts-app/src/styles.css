@@ -2,24 +2,33 @@ body {
     font-family: 'Arial';
 }
 
-table, th, td {
+.main-todo-table {
+    margin-top: 8px;
     border: 1px solid black;
+    border-collapse: collapse;
 }
 
-th, td {
+.main-todo-table thead {
+    background-color: black;
+    color: white;
+    border: 1px double black;
+}
+
+.main-todo-table th, .main-todo-table td {
     padding: 4px 10px;
 }
 
-th {
+.main-todo-table th {
     text-align: center;
+    border: 1px solid darkgray;
 }
 
-td:has(button) {
-    text-align: center;
+.main-todo-table td {
+    border: 1px solid black;
 }
 
-table {
-    margin-top: 8px;
+.main-todo-table td:has(button) {
+    text-align: center;
 }
 
 .no-tasks-message {
