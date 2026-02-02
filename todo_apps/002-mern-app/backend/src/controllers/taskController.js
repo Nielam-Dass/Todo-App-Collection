@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 const Task = require("../models/Task");
+const express = require("express");
 
 
+/**
+ * Get individual task document from database
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object 
+ */
 async function getTaskInfo(req, res) {
     if(!mongoose.Types.ObjectId.isValid(req.params.taskId)) {
         return res.status(404).json({message: "Task not found"});
@@ -13,6 +19,11 @@ async function getTaskInfo(req, res) {
     res.status(200).json(task);
 }
 
+/**
+ * Add new task document to database
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object 
+ */
 async function addTask(req, res) {
     const taskObject = req.body;
     if(!taskObject.taskName || !taskObject.taskDescription) {
@@ -27,6 +38,11 @@ async function addTask(req, res) {
     }
 }
 
+/**
+ * Update task document information in database
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object 
+ */
 async function updateTask(req, res) {
     const taskId = req.params.taskId;
     const { taskName, taskDescription, taskCompleted } = req.body;
@@ -51,6 +67,11 @@ async function updateTask(req, res) {
     res.status(200).json({ message: `Task ${taskId} has been updated` });
 }
 
+/**
+ * Delete individual task document from database
+ * @param {express.Request} req Request object
+ * @param {express.Response} res Response object 
+ */
 async function deleteTask(req, res) {
     const taskId = req.params.taskId;
     const task = await Task.findById(taskId);
