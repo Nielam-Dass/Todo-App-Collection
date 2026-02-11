@@ -38,3 +38,8 @@ export const fetchAllTasks = async () => {
     await delay(2000);
     return mockTasks;
 }
+
+// TODO: Query backend to fetch single task based on taskId
+export const fetchOneTask = (taskId) => {
+    return mockTasks.find(task => task._id === taskId)
+}
