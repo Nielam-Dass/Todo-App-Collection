@@ -1,6 +1,17 @@
+import { useParams } from "react-router-dom";
+import { fetchOneTask } from "../../services/taskService";
+
+
 function TaskPage () {
+  const { taskId } = useParams();
+  const task = fetchOneTask(taskId);
+
   return (
-    <div>Task - TODO Task Route</div>
+    <>
+    <div>Task ID: {task._id}</div>
+    <div>Task Name: {task.taskName}</div>
+    <div>Task Description: {task.taskDescription}</div>
+    </>
   );
 }
 
