@@ -1,7 +1,14 @@
+import { JSX } from "react"
 import { useNavigate } from "react-router-dom";
 import trashCanIcon from "../../assets/trash_can.svg";
 
-
+/**
+ * Task Card component
+ * 
+ * @param {object} props
+ * @param {object} props.task Task object containing details to display in card
+ * @returns {JSX.Element}
+ */
 function TaskCard(props) {
   const navigate = useNavigate();
 

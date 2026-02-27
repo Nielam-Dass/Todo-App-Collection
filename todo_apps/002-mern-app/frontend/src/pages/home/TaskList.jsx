@@ -1,5 +1,15 @@
+import { JSX } from "react"
 import TaskCard from "./TaskCard";
 
+
+/**
+ * Task List component
+ * 
+ * @param {object} props
+ * @param {boolean} props.tasksLoading Whether tasks are still being retrieved
+ * @param {Array} props.taskList List of task objects
+ * @returns {JSX.Element}
+ */
 function TaskList(props) {
   if(props.tasksLoading) {
     return (

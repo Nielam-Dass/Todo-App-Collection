@@ -1,8 +1,14 @@
+import { JSX } from "react"
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllTasks } from "../../services/taskService";
 import TaskList from "./TaskList";
 
 
+/**
+ * Home Page component
+ * 
+ * @returns {JSX.Element}
+ */
 function HomePage () {
   const query = useQuery({
     queryKey: ["tasks"],

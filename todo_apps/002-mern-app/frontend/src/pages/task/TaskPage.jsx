@@ -1,7 +1,13 @@
+import { JSX } from "react"
 import { useParams } from "react-router-dom";
 import { fetchOneTask } from "../../services/taskService";
 
 
+/**
+ * Task Page component
+ * 
+ * @returns {JSX.Element}
+ */
 function TaskPage () {
   const { taskId } = useParams();
   const task = fetchOneTask(taskId);
